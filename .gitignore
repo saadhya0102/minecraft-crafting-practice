@@ -8,3 +8,4 @@ dist-ssr
 .env.local
 coverage
 *.tsbuildinfo
+.firebase
