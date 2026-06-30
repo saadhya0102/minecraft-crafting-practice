@@ -1,0 +1,31 @@
+rules_version = '2';
+
+// CraftPace Firestore rules.
+// Defense-in-depth for leaderboards. Authoritative anti-cheat (validating that
+// a submitted time matches its recorded input timeline) should run in a Cloud
+// Function that writes verified scores; these rules cover ownership + basic
+// plausibility for the client-write path during development.
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Per-user settings sync (keybinds, custom challenges).
+    match /users/{uid} {
+      allow read, write: if request.auth != null && request.auth.uid == uid;
+    }
+
+    // Leaderboards: one best-score doc per user per board.
+    match /leaderboards/{board}/scores/{uid} {
+      allow read: if true;
+      allow write: if request.auth != null
+        && request.auth.uid == uid
+        && request.resource.data.uid == uid
+        && request.resource.data.durationMs is number
+        && request.resource.data.durationMs >= 400          // plausibility floor
+        && request.resource.data.actions is number
+        && request.resource.data.actions >= 0
+        && request.resource.data.name is string
+        && request.resource.data.name.size() <= 32;
+    }
+  }
+}
