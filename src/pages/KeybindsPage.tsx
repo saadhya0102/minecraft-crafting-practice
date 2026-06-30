@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useKeybindStore } from "../input/keybindStore";
-import { ACTIONS, codeLabel, type ActionId } from "../input/actions";
+import { ACTIONS, GROUP_LABELS, GROUP_ORDER, codeLabel, type ActionId } from "../input/actions";
 
 export function KeybindsPage() {
   const profiles = useKeybindStore((s) => s.profiles);
@@ -34,8 +34,9 @@ export function KeybindsPage() {
     return () => window.removeEventListener("keydown", onKey, { capture: true });
   }, [listening, setBind]);
 
-  const mc = ACTIONS.filter((a) => a.group === "mc");
-  const tool = ACTIONS.filter((a) => a.group === "tool");
+  const groups = GROUP_ORDER.map((g) => ({ title: GROUP_LABELS[g], items: ACTIONS.filter((a) => a.group === g) })).filter(
+    (grp) => grp.items.length > 0,
+  );
 
   return (
     <div className="keybinds">
@@ -81,10 +82,7 @@ export function KeybindsPage() {
 
       {message && <p className="kb-message">{message}</p>}
 
-      {[
-        { title: "Minecraft Parity", items: mc },
-        { title: "Trainer Tools", items: tool },
-      ].map((group) => (
+      {groups.map((group) => (
         <div key={group.title} className="kb-group">
           <h3>{group.title}</h3>
           <table className="kb-table">

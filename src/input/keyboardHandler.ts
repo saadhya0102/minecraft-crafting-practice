@@ -23,7 +23,9 @@ export function installKeyboard(getHover: () => number | null): () => void {
     const code = e.code.replace(/^Numpad([1-9])$/, "Digit$1");
     const binds = useKeybindStore.getState().binds();
     const action = ACTIONS.find((a) => binds[a.id] && binds[a.id] === code);
-    if (!action) return;
+    // Parity-only binds (movement, chat, screenshot, etc.) are catalogued for
+    // remapping but never intercepted - let the browser handle those keys.
+    if (!action || !action.functional) return;
 
     const game = useGameStore.getState();
     const hover = getHover();
@@ -49,7 +51,6 @@ export function installKeyboard(getHover: () => number | null): () => void {
         game.setInstantSmelt(!game.instantSmelt);
         break;
       case "toggleRecipeBook":
-      case "closeGui":
         e.preventDefault();
         emitAction(action.id);
         break;
