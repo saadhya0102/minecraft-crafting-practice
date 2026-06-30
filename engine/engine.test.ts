@@ -211,6 +211,23 @@ describe("shift-click quick move", () => {
     expect(firstMain).toEqual({ id: "minecraft:oak_planks", count: 10 });
   });
 
+  it("fast-loots a chest: shift-clicking each slot empties the container into the inventory", () => {
+    const state = engine.create(chestLayout());
+    const ids = state.layout.containerSlots;
+    state.slots[ids[0]] = { id: "minecraft:iron_ingot", count: 4 };
+    state.slots[ids[1]] = { id: "minecraft:gold_ingot", count: 2 };
+    state.slots[ids[2]] = { id: "minecraft:oak_planks", count: 8 };
+    for (const id of ids) engine.shiftLeftClick(state, id);
+    // container fully emptied
+    expect(ids.every((id) => state.slots[id] === null)).toBe(true);
+    // items landed in the player inventory
+    const total = [...state.layout.playerMain, ...state.layout.playerHotbar]
+      .map((id) => state.slots[id])
+      .filter((s) => s)
+      .reduce((a, s) => a + s!.count, 0);
+    expect(total).toBe(14);
+  });
+
   it("routes a smeltable into the furnace input via shift-click", () => {
     const state = engine.create(furnaceLayout());
     const h0 = state.layout.playerHotbar[0];

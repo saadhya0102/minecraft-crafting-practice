@@ -13,6 +13,8 @@ export function GuiCanvas({ scale = 3 }: { scale?: number }) {
   const scaleRef = useRef(scale);
   const uiRef = useRef<UiState>({ hoverSlot: null, cursorX: 0, cursorY: 0, dragSlots: [] });
   const draggingRef = useRef(false);
+  const shiftSwipeRef = useRef(false);
+  const shiftVisitedRef = useRef<Set<number>>(new Set());
   const lastLeftRef = useRef<{ t: number; slot: number | null }>({ t: 0, slot: null });
 
   // Init Pixi exactly once for the lifetime of the canvas. The await-based
@@ -117,8 +119,11 @@ export function GuiCanvas({ scale = 3 }: { scale?: number }) {
       return;
     }
 
-    // Shift + click = quick-move (matches Minecraft).
+    // Shift + click = quick-move; holding shift and dragging across slots
+    // quick-moves each one (Minecraft "fast looting" / swipe looting).
     if (e.button === 0 && e.shiftKey) {
+      shiftSwipeRef.current = true;
+      shiftVisitedRef.current = new Set([slot]);
       dispatch({ t: "shiftLeft", slot });
       redraw();
       return;
@@ -153,7 +158,14 @@ export function GuiCanvas({ scale = 3 }: { scale?: number }) {
     uiRef.current.cursorX = gx;
     uiRef.current.cursorY = gy;
     uiRef.current.hoverSlot = slot;
-    if (draggingRef.current && slot != null && !uiRef.current.dragSlots.includes(slot)) {
+    if (shiftSwipeRef.current) {
+      if (!e.shiftKey) {
+        shiftSwipeRef.current = false;
+      } else if (slot != null && !shiftVisitedRef.current.has(slot)) {
+        shiftVisitedRef.current.add(slot);
+        useGameStore.getState().dispatch({ t: "shiftLeft", slot });
+      }
+    } else if (draggingRef.current && slot != null && !uiRef.current.dragSlots.includes(slot)) {
       uiRef.current.dragSlots.push(slot);
       useGameStore.getState().dispatch({ t: "dragAdd", slot });
     }
@@ -171,6 +183,7 @@ export function GuiCanvas({ scale = 3 }: { scale?: number }) {
   function onPointerUp(e: React.PointerEvent) {
     e.preventDefault();
     (e.target as Element).releasePointerCapture?.(e.pointerId);
+    shiftSwipeRef.current = false;
     endDrag();
   }
 
@@ -193,6 +206,7 @@ export function GuiCanvas({ scale = 3 }: { scale?: number }) {
 
   function onPointerCancel(e: React.PointerEvent) {
     (e.target as Element).releasePointerCapture?.(e.pointerId);
+    shiftSwipeRef.current = false;
     endDrag();
     uiRef.current.hoverSlot = null;
     redraw();
