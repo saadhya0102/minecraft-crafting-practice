@@ -96,6 +96,8 @@ export function GuiCanvas({ scale = 3 }: { scale?: number }) {
 
   function onPointerDown(e: React.PointerEvent) {
     e.preventDefault();
+    // Drop focus from any tab/reset button or dropdown so keybinds aren't swallowed.
+    (document.activeElement as HTMLElement | null)?.blur?.();
     (e.target as Element).setPointerCapture?.(e.pointerId);
     const { gx, gy, slot } = toGui(e);
     uiRef.current.cursorX = gx;

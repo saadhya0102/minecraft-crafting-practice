@@ -716,6 +716,12 @@ input[type="number"] {
   font-size: 12px;
   color: var(--muted);
 }
+.auth-status {
+  display: block;
+  padding: 6px 10px;
+  font-size: 12px;
+  color: var(--accent);
+}
 .lb-controls {
   display: flex;
   gap: 16px;

@@ -12,6 +12,11 @@ service cloud.firestore {
     // Per-user settings sync (keybinds, custom challenges).
     match /users/{uid} {
       allow read, write: if request.auth != null && request.auth.uid == uid;
+
+      // Per-user attempt history (cloud backup of local IndexedDB).
+      match /attempts/{attemptId} {
+        allow read, write: if request.auth != null && request.auth.uid == uid;
+      }
     }
 
     // Leaderboards: one best-score doc per user per board.

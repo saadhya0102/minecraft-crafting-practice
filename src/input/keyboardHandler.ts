@@ -13,9 +13,11 @@ export function emitAction(id: ActionId): void {
  */
 export function installKeyboard(getHover: () => number | null): () => void {
   const onKey = (e: KeyboardEvent) => {
-    // Don't hijack typing or activating focused controls.
+    // Don't hijack typing in text fields / dropdowns. (Buttons are intentionally
+    // NOT blocked: a tab/reset button keeps focus after a click, and blocking it
+    // would silently swallow every keybind on the practice screen.)
     const tag = (e.target as HTMLElement)?.tagName;
-    if (tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT" || tag === "BUTTON" || (e.target as HTMLElement)?.isContentEditable) return;
+    if (tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT" || (e.target as HTMLElement)?.isContentEditable) return;
 
     // Treat numpad digits the same as the top-row digits.
     const code = e.code.replace(/^Numpad([1-9])$/, "Digit$1");

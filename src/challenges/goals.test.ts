@@ -36,6 +36,6 @@ describe("challenge goals", () => {
 
   it("counts items across the player's holdings", () => {
     const { state } = start("iron_tools");
-    expect(countItem(state, "minecraft:iron_ingot")).toBe(6);
+    expect(countItem(state, "minecraft:iron_ingot")).toBe(9);
   });
 });

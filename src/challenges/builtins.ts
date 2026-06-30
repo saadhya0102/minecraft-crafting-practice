@@ -25,7 +25,8 @@ export const BUILTIN_CHALLENGES: Challenge[] = [
     layoutId: "crafting_table",
     setup: {
       layoutId: "crafting_table",
-      hotbar: [stack("iron_ingot", 6), stack("stick", 4), null, null, null, null, null, null, null],
+      // Needs 6 iron + 5 sticks; staged with a small margin so a misplace is recoverable.
+      hotbar: [stack("iron_ingot", 9), stack("stick", 8), null, null, null, null, null, null, null],
     },
     goal: {
       kind: "haveItems",
@@ -46,7 +47,8 @@ export const BUILTIN_CHALLENGES: Challenge[] = [
     layoutId: "crafting_table",
     setup: {
       layoutId: "crafting_table",
-      hotbar: [stack("oak_planks", 11), stack("iron_ingot", 3), null, null, null, null, null, null, null],
+      // Needs 11 planks + 3 iron; staged with a small margin.
+      hotbar: [stack("oak_planks", 16), stack("iron_ingot", 4), null, null, null, null, null, null, null],
     },
     goal: {
       kind: "haveItems",
@@ -98,7 +100,8 @@ export const BUILTIN_CHALLENGES: Challenge[] = [
     layoutId: "crafting_table",
     setup: {
       layoutId: "crafting_table",
-      hotbar: [stack("iron_ingot", 9), stack("oak_planks", 32), stack("stick", 8), stack("flint", 1), null, null, null, null, null],
+      // Needs 9 iron + 11 planks + 3 sticks + 1 flint; staged with a margin.
+      hotbar: [stack("iron_ingot", 12), stack("oak_planks", 32), stack("stick", 8), stack("flint", 2), null, null, null, null, null],
     },
     goal: {
       kind: "haveItems",

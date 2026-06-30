@@ -30,7 +30,7 @@ export const PRESETS_1_16_1: NamedSetup[] = [
     description: "Typical inventory after looting buried treasure: iron, planks, sticks.",
     setup: {
       layoutId: "crafting_table",
-      hotbar: [s("iron_ingot", 6), s("oak_planks", 12), s("stick", 4), s("cobblestone", 16), s("flint", 1), null, null, null, null],
+      hotbar: [s("iron_ingot", 9), s("oak_planks", 12), s("stick", 8), s("cobblestone", 16), s("flint", 1), null, null, null, null],
     },
   },
   {
@@ -39,7 +39,7 @@ export const PRESETS_1_16_1: NamedSetup[] = [
     description: "Materials staged to craft a boat, a bucket, and doors as fast as possible.",
     setup: {
       layoutId: "crafting_table",
-      hotbar: [s("oak_planks", 11), s("iron_ingot", 3), null, null, null, null, null, null, null],
+      hotbar: [s("oak_planks", 16), s("iron_ingot", 4), null, null, null, null, null, null, null],
     },
   },
   {

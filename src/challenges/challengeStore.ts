@@ -6,6 +6,7 @@ import type { Challenge } from "./types";
 import { goalMet, reqMet } from "./goals";
 import type { Attempt, TimelineEntry } from "../recorder/types";
 import { putAttempt } from "../lib/idb";
+import { pushAttempt } from "../firebase/historySync";
 
 // Module-level recording buffers (kept out of store state to avoid re-renders).
 let timeline: TimelineEntry[] = [];
@@ -190,6 +191,7 @@ export const useChallengeStore = create<ChallengeStore>((set, get) => ({
         setup: s.active.setup,
       };
       void putAttempt(attempt).catch(() => {});
+      void pushAttempt(attempt).catch(() => {});
     } else {
       set({ status, startMs, actions, splitTimes });
     }

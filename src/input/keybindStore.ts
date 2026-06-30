@@ -19,6 +19,8 @@ interface KeybindStore {
   deleteProfile: (index: number) => void;
   exportActive: () => string;
   importProfile: (json: string) => boolean;
+  /** Re-read from localStorage (used after a cloud restore). */
+  reload: () => void;
 }
 
 const KEY = "craftpace.keybinds.v1";
@@ -125,5 +127,10 @@ export const useKeybindStore = create<KeybindStore>((set, get) => ({
     } catch {
       return false;
     }
+  },
+
+  reload: () => {
+    const fresh = load();
+    set({ profiles: fresh.profiles, active: fresh.active });
   },
 }));

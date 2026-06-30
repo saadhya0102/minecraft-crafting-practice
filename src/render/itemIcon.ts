@@ -33,8 +33,13 @@ function block(ctx: Ctx, base: string): void {
   p(ctx, 1, 1, 2, 14, shade(base, 0.12));
   p(ctx, 1, 13, 14, 2, shade(base, -0.26));
   p(ctx, 13, 1, 2, 14, shade(base, -0.16));
-  p(ctx, 5, 6, 2, 2, shade(base, -0.12));
-  p(ctx, 9, 9, 2, 2, shade(base, 0.1));
+  const tex: [number, number, number][] = [
+    [3, 4, -0.14], [6, 3, 0.1], [9, 5, -0.1], [11, 8, 0.08], [4, 9, 0.12], [7, 7, -0.08],
+    [10, 11, -0.16], [5, 12, 0.06], [12, 4, -0.12], [8, 10, 0.1], [3, 11, -0.1], [11, 6, 0.14],
+  ];
+  for (const [x, y, s] of tex) p(ctx, x, y, 1, 1, shade(base, s));
+  p(ctx, 2, 2, 2, 1, shade(base, 0.08));
+  p(ctx, 12, 12, 2, 2, shade(base, -0.1));
 }
 function bevel(ctx: Ctx, base: string): void {
   p(ctx, 2, 2, 12, 12, base);
@@ -86,42 +91,60 @@ function grassBlock(ctx: Ctx, base: string, accent?: string): void {
   const dirt = accent ?? "#7a5a3a";
   p(ctx, 1, 1, 14, 14, dirt);
   p(ctx, 1, 1, 14, 6, base);
-  p(ctx, 2, 6, 3, 1, base);
-  p(ctx, 7, 6, 2, 1, dirt);
-  p(ctx, 10, 6, 3, 1, base);
-  p(ctx, 4, 7, 2, 1, base);
-  p(ctx, 11, 7, 2, 1, base);
+  p(ctx, 2, 7, 12, 1, shade(base, -0.1));
+  const grassTex: [number, number, number][] = [
+    [3, 2, 0.14], [7, 3, -0.1], [11, 2, 0.1], [5, 5, -0.12], [10, 5, 0.08], [4, 4, 0.06],
+  ];
+  for (const [x, y, s] of grassTex) p(ctx, x, y, 1, 1, shade(base, s));
+  for (const [x, y] of [[3, 9], [8, 10], [12, 11], [5, 12], [10, 13], [4, 8]] as const)
+    p(ctx, x, y, 1, 1, shade(dirt, -0.16));
   p(ctx, 1, 1, 14, 1, shade(base, 0.2));
-  p(ctx, 13, 1, 1, 13, shade(dirt, -0.14));
-  p(ctx, 1, 13, 14, 1, shade(dirt, -0.24));
+  p(ctx, 1, 1, 1, 6, shade(base, 0.1));
+  p(ctx, 14, 1, 1, 13, shade(dirt, -0.14));
+  p(ctx, 1, 14, 14, 1, shade(dirt, -0.26));
+  p(ctx, 2, 8, 11, 1, shade(dirt, 0.08));
 }
 function speckle(ctx: Ctx, base: string): void {
   block(ctx, base);
   const pts: [number, number, number][] = [
     [3, 4, -0.22], [6, 3, 0.14], [10, 5, -0.16], [12, 8, 0.1], [4, 8, 0.12], [7, 10, -0.18],
     [9, 12, -0.1], [11, 7, 0.16], [5, 11, -0.14], [8, 6, 0.08], [13, 11, -0.2], [2, 10, 0.06],
+    [3, 7, -0.12], [10, 10, 0.1], [6, 12, -0.16], [12, 4, 0.08],
   ];
   for (const [x, y, s] of pts) p(ctx, x, y, 1, 1, shade(base, s));
 }
 function glassPane(ctx: Ctx, base: string): void {
-  const edge = shade(base, 0.35);
-  p(ctx, 3, 2, 10, 12, edge);
-  p(ctx, 4, 3, 8, 10, base);
-  p(ctx, 5, 4, 6, 8, shade(base, 0.12));
-  p(ctx, 3, 2, 10, 1, "#ffffff");
-  p(ctx, 3, 2, 1, 12, "#ffffff");
-  p(ctx, 3, 13, 10, 1, shade(base, -0.15));
-  p(ctx, 12, 2, 1, 12, shade(base, -0.1));
-  p(ctx, 4, 3, 2, 1, "#ffffff");
+  const dark = shade(base, -0.2);
+  const mid = shade(base, 0.06);
+  const bright = shade(base, 0.22);
+  p(ctx, 1, 1, 14, 14, dark);
+  p(ctx, 2, 2, 12, 12, mid);
+  p(ctx, 3, 3, 10, 10, bright);
+  p(ctx, 1, 1, 14, 2, "#ffffff");
+  p(ctx, 1, 1, 2, 14, "#ffffff");
+  p(ctx, 2, 2, 1, 12, shade(base, 0.38));
+  p(ctx, 2, 1, 12, 1, shade(base, 0.38));
+  p(ctx, 1, 13, 14, 2, shade(base, -0.28));
+  p(ctx, 13, 1, 2, 14, shade(base, -0.22));
+  p(ctx, 4, 4, 2, 7, "#ffffff");
+  p(ctx, 5, 5, 1, 5, shade(base, 0.45));
+  p(ctx, 10, 9, 2, 2, shade(base, 0.15));
+  p(ctx, 8, 6, 1, 2, shade(base, 0.25));
 }
 function obsidianBlock(ctx: Ctx, base: string): void {
   p(ctx, 1, 1, 14, 14, base);
-  p(ctx, 1, 1, 14, 1, shade(base, 0.08));
-  p(ctx, 1, 13, 14, 1, shade(base, -0.2));
+  p(ctx, 1, 1, 14, 2, shade(base, 0.1));
+  p(ctx, 1, 1, 2, 14, shade(base, 0.06));
+  p(ctx, 1, 13, 14, 2, shade(base, -0.28));
+  p(ctx, 13, 1, 2, 14, shade(base, -0.22));
   const glint = shade(base, 0.55);
-  for (const [x, y] of [[4, 4], [10, 3], [7, 8], [11, 11], [3, 10], [8, 5]] as const) {
-    p(ctx, x, y, 1, 1, glint);
-  }
+  const glintLo = shade(base, 0.28);
+  for (const [x, y] of [[4, 3], [9, 2], [6, 7], [11, 10], [3, 9], [8, 4], [12, 6]] as const)
+    p(ctx, x, y, 1, 1, glintLo);
+  p(ctx, 4, 4, 1, 1, glint);
+  p(ctx, 10, 3, 1, 1, glint);
+  p(ctx, 7, 8, 1, 1, glint);
+  p(ctx, 11, 11, 1, 1, glint);
 }
 function hayBlock(ctx: Ctx, base: string): void {
   p(ctx, 1, 1, 14, 14, base);
@@ -164,14 +187,19 @@ function ingot(ctx: Ctx, base: string): void {
 }
 function ore(ctx: Ctx, base: string): void {
   const stone = "#787878";
-  p(ctx, 2, 3, 12, 10, stone);
-  p(ctx, 2, 3, 12, 2, shade(stone, 0.2));
-  p(ctx, 2, 3, 2, 10, shade(stone, 0.12));
-  p(ctx, 2, 12, 12, 1, shade(stone, -0.24));
-  p(ctx, 13, 3, 1, 10, shade(stone, -0.16));
-  for (const [x, y] of [[5, 5], [10, 4], [6, 9], [11, 10], [4, 11]] as const) {
+  p(ctx, 1, 1, 14, 14, stone);
+  p(ctx, 1, 1, 14, 2, shade(stone, 0.2));
+  p(ctx, 1, 1, 2, 14, shade(stone, 0.12));
+  p(ctx, 1, 13, 14, 2, shade(stone, -0.24));
+  p(ctx, 13, 1, 2, 14, shade(stone, -0.16));
+  const speck: [number, number, number][] = [
+    [4, 4, -0.1], [8, 3, 0.08], [11, 6, -0.12], [3, 10, 0.06], [9, 11, -0.08], [12, 12, 0.1],
+  ];
+  for (const [x, y, s] of speck) p(ctx, x, y, 1, 1, shade(stone, s));
+  for (const [x, y] of [[4, 4], [9, 3], [5, 9], [10, 10], [11, 6]] as const) {
     p(ctx, x, y, 2, 2, base);
     p(ctx, x, y, 1, 1, shade(base, 0.32));
+    p(ctx, x + 1, y + 1, 1, 1, shade(base, -0.18));
   }
 }
 function rawLump(ctx: Ctx, base: string): void {
@@ -237,28 +265,78 @@ function gem(ctx: Ctx, base: string): void {
   p(ctx, 6, 5, 2, 2, L);
 }
 function quartzShard(ctx: Ctx, base: string): void {
-  p(ctx, 7, 2, 2, 10, base);
-  p(ctx, 6, 4, 1, 6, base);
-  p(ctx, 9, 3, 1, 8, base);
-  p(ctx, 7, 2, 2, 2, shade(base, 0.3));
-  p(ctx, 9, 10, 1, 2, shade(base, -0.22));
+  const L = shade(base, 0.32);
+  const D = shade(base, -0.26);
+  const M = shade(base, -0.1);
+  p(ctx, 7, 1, 2, 2, L);
+  p(ctx, 7, 3, 2, 8, base);
+  p(ctx, 7, 3, 1, 7, shade(L, 0.14));
+  p(ctx, 9, 4, 1, 6, D);
+  p(ctx, 6, 5, 1, 5, M);
+  p(ctx, 6, 10, 4, 2, base);
+  p(ctx, 6, 11, 3, 1, D);
+  p(ctx, 9, 11, 2, 1, shade(D, -0.08));
+  p(ctx, 4, 6, 2, 5, shade(base, 0.04));
+  p(ctx, 4, 6, 1, 4, L);
+  p(ctx, 5, 10, 2, 1, D);
+  p(ctx, 4, 5, 2, 1, base);
+  p(ctx, 10, 7, 2, 3, M);
+  p(ctx, 10, 7, 1, 2, L);
+  p(ctx, 11, 9, 1, 1, D);
 }
 function gemShard(ctx: Ctx, base: string): void {
   const L = shade(base, 0.3);
-  p(ctx, 4, 5, 3, 4, base);
-  p(ctx, 8, 4, 2, 3, base);
-  p(ctx, 9, 8, 3, 3, base);
-  p(ctx, 5, 10, 4, 2, base);
-  p(ctx, 4, 5, 2, 1, L);
-  p(ctx, 6, 7, 2, 2, shade(base, 0.15));
+  const D = shade(base, -0.28);
+  const V = shade(base, -0.12);
+  p(ctx, 3, 3, 5, 5, base);
+  p(ctx, 3, 3, 5, 1, L);
+  p(ctx, 3, 3, 1, 5, shade(L, 0.08));
+  p(ctx, 7, 5, 1, 3, D);
+  p(ctx, 6, 5, 4, 4, shade(base, 0.06));
+  p(ctx, 6, 5, 4, 1, L);
+  p(ctx, 9, 6, 1, 3, D);
+  p(ctx, 4, 9, 3, 3, V);
+  p(ctx, 4, 9, 3, 1, shade(V, 0.2));
+  p(ctx, 4, 11, 3, 1, D);
+  p(ctx, 9, 8, 3, 4, base);
+  p(ctx, 9, 8, 3, 1, L);
+  p(ctx, 11, 9, 1, 3, D);
+  p(ctx, 7, 10, 2, 2, shade(base, 0.1));
+  p(ctx, 7, 10, 1, 1, shade(base, 0.36));
+  p(ctx, 10, 4, 2, 2, V);
+  p(ctx, 10, 4, 1, 1, L);
+  p(ctx, 2, 7, 2, 1, D);
 }
 function dust(ctx: Ctx, base: string): void {
-  for (const [x, y] of [[3, 5], [6, 3], [9, 6], [12, 4], [5, 9], [8, 10], [11, 11], [4, 12], [7, 7], [10, 8]] as const) {
-    p(ctx, x, y, 2, 2, base);
-  }
+  const L = shade(base, 0.26);
+  const Hi = shade(base, 0.42);
+  const D = shade(base, -0.2);
+  const Lo = shade(base, -0.32);
+  p(ctx, 4, 12, 8, 1, Lo);
+  p(ctx, 3, 11, 2, 1, D);
+  p(ctx, 11, 11, 2, 1, D);
+  p(ctx, 5, 9, 7, 2, base);
+  p(ctx, 6, 7, 5, 2, base);
+  p(ctx, 7, 6, 3, 1, L);
+  p(ctx, 4, 10, 2, 2, shade(base, -0.06));
+  p(ctx, 11, 9, 2, 2, shade(base, -0.1));
+  p(ctx, 5, 8, 2, 1, L);
+  p(ctx, 7, 6, 2, 1, Hi);
+  p(ctx, 8, 7, 1, 1, Hi);
+  p(ctx, 9, 8, 2, 1, D);
+  p(ctx, 6, 9, 1, 1, Lo);
+  p(ctx, 3, 8, 1, 1, shade(base, 0.14));
+  p(ctx, 12, 8, 1, 1, shade(base, -0.08));
+  p(ctx, 2, 10, 1, 1, D);
+  p(ctx, 10, 6, 1, 1, L);
+  p(ctx, 13, 10, 1, 1, shade(base, 0.08));
+  p(ctx, 4, 6, 1, 1, shade(base, 0.18));
+  p(ctx, 9, 12, 1, 1, Lo);
+  p(ctx, 5, 5, 1, 1, Hi);
+  p(ctx, 8, 5, 2, 1, shade(base, 0.1));
 }
 
-// --- Loose drops / round items --------------------------------------------
+// --- Loose drops -----------------------------------------------------------
 function orb(ctx: Ctx, base: string, accent?: string): void {
   const rows: [number, number][] = [
     [7, 2], [6, 4], [5, 6], [4, 8], [4, 8], [4, 8], [4, 8], [5, 6], [6, 4], [7, 2],
@@ -287,52 +365,123 @@ function rod(ctx: Ctx, base: string): void {
   p(ctx, 7, 13, 2, 1, shade(base, -0.25));
 }
 function boneItem(ctx: Ctx, base: string): void {
-  const D = shade(base, -0.24);
+  const L = shade(base, 0.24);
+  const D = shade(base, -0.26);
+  p(ctx, 1, 6, 1, 4, L);
+  p(ctx, 2, 5, 4, 1, L);
   p(ctx, 2, 6, 4, 4, base);
+  p(ctx, 5, 7, 1, 2, base);
+  p(ctx, 2, 10, 4, 1, D);
+  p(ctx, 1, 9, 1, 1, D);
+  p(ctx, 10, 5, 4, 1, L);
   p(ctx, 10, 6, 4, 4, base);
-  p(ctx, 2, 6, 4, 1, shade(base, 0.2));
-  p(ctx, 10, 6, 4, 1, shade(base, 0.2));
-  p(ctx, 5, 7, 6, 2, base);
-  p(ctx, 5, 8, 6, 1, D);
-  p(ctx, 2, 9, 4, 1, D);
-  p(ctx, 10, 9, 4, 1, D);
+  p(ctx, 14, 6, 1, 4, D);
+  p(ctx, 10, 10, 4, 1, D);
+  p(ctx, 14, 9, 1, 1, D);
+  p(ctx, 6, 7, 4, 2, base);
+  p(ctx, 6, 8, 4, 1, D);
+  p(ctx, 2, 6, 2, 2, L);
+  p(ctx, 11, 6, 2, 2, L);
+  p(ctx, 3, 7, 1, 2, L);
 }
 function feather(ctx: Ctx, base: string, accent?: string): void {
-  const shaft = accent ?? shade(base, -0.4);
-  for (let i = 0; i < 10; i++) p(ctx, 3 + i, 12 - i, 1, 2, shaft);
-  for (const [x, y, w] of [[6, 4, 3], [5, 5, 5], [4, 6, 6], [4, 7, 5], [5, 8, 3]] as const) p(ctx, x, y, w, 1, base);
-  p(ctx, 5, 5, 3, 1, shade(base, 0.22));
+  const shaft = accent ?? shade(base, -0.42);
+  const hi = shade(base, 0.26);
+  const lo = shade(base, -0.12);
+  for (let y = 3; y <= 12; y++) p(ctx, y < 8 ? 7 : 8, y, 1, 1, shaft);
+  p(ctx, 7, 13, 2, 1, shaft);
+  p(ctx, 5, 3, 4, 1, hi);
+  p(ctx, 4, 4, 8, 1, base);
+  p(ctx, 3, 5, 10, 1, base);
+  p(ctx, 3, 6, 10, 1, base);
+  p(ctx, 3, 7, 10, 1, base);
+  p(ctx, 3, 8, 10, 1, base);
+  p(ctx, 4, 9, 9, 1, base);
+  p(ctx, 4, 10, 8, 1, lo);
+  p(ctx, 5, 11, 6, 1, lo);
+  p(ctx, 6, 12, 4, 1, lo);
+  p(ctx, 2, 6, 1, 3, hi);
+  p(ctx, 13, 5, 1, 4, lo);
+  p(ctx, 5, 4, 2, 1, hi);
+  p(ctx, 10, 3, 2, 1, hi);
 }
 function stringItem(ctx: Ctx, base: string): void {
-  for (const [x, y, w, h] of [[3, 4, 4, 1], [2, 5, 1, 4], [6, 5, 1, 3], [3, 8, 4, 1], [8, 5, 5, 1], [12, 6, 1, 4], [9, 9, 4, 1], [8, 7, 1, 2], [5, 10, 6, 1], [4, 11, 1, 2], [10, 11, 1, 2]] as const)
-    p(ctx, x, y, w, h, base);
-  p(ctx, 5, 10, 4, 1, shade(base, 0.12));
+  const hi = shade(base, 0.2);
+  const lo = shade(base, -0.16);
+  p(ctx, 5, 3, 5, 1, hi);
+  p(ctx, 4, 4, 1, 2, base);
+  p(ctx, 10, 4, 1, 3, base);
+  p(ctx, 3, 5, 1, 3, base);
+  p(ctx, 11, 6, 1, 2, lo);
+  p(ctx, 4, 7, 1, 1, base);
+  p(ctx, 5, 7, 6, 1, lo);
+  p(ctx, 4, 8, 1, 2, base);
+  p(ctx, 11, 8, 1, 2, base);
+  p(ctx, 5, 10, 1, 2, base);
+  p(ctx, 10, 10, 1, 2, base);
+  p(ctx, 6, 12, 4, 1, lo);
+  p(ctx, 2, 6, 2, 1, hi);
+  p(ctx, 12, 4, 2, 1, hi);
+  p(ctx, 7, 5, 2, 1, hi);
+  p(ctx, 8, 9, 1, 2, hi);
+  p(ctx, 3, 9, 2, 1, lo);
 }
 function sheet(ctx: Ctx, base: string): void {
-  p(ctx, 4, 2, 9, 12, base);
-  p(ctx, 4, 2, 9, 1, shade(base, 0.16));
-  p(ctx, 12, 2, 1, 12, shade(base, -0.14));
-  p(ctx, 4, 13, 9, 1, shade(base, -0.14));
-  p(ctx, 6, 6, 1, 5, shade(base, -0.06));
-  p(ctx, 8, 5, 1, 4, shade(base, -0.05));
+  const L = shade(base, 0.22);
+  const D = shade(base, -0.2);
+  p(ctx, 3, 2, 8, 1, L);
+  p(ctx, 4, 3, 9, 1, L);
+  p(ctx, 4, 4, 10, 9, base);
+  p(ctx, 3, 3, 1, 10, L);
+  p(ctx, 13, 4, 1, 10, D);
+  p(ctx, 14, 5, 1, 8, D);
+  p(ctx, 5, 13, 9, 1, D);
+  p(ctx, 11, 4, 2, 2, shade(base, -0.06));
+  p(ctx, 12, 5, 1, 1, D);
+  p(ctx, 7, 5, 1, 7, shade(base, -0.08));
+  p(ctx, 9, 6, 1, 5, shade(base, -0.05));
 }
 function bookItem(ctx: Ctx, base: string, accent?: string): void {
-  const cover = shade(base, -0.08);
+  const cover = shade(base, -0.12);
   const pages = accent ?? "#f4f4ee";
-  p(ctx, 3, 3, 10, 10, cover);
-  p(ctx, 5, 4, 7, 8, pages);
-  p(ctx, 3, 3, 2, 10, shade(base, -0.22));
-  p(ctx, 3, 3, 10, 1, shade(cover, 0.22));
-  p(ctx, 6, 5, 1, 6, shade(pages, -0.1));
-  p(ctx, 8, 6, 1, 4, shade(pages, -0.08));
+  const strap = shade(base, -0.35);
+  const pageLine = shade(pages, -0.12);
+  p(ctx, 3, 2, 10, 11, cover);
+  p(ctx, 3, 2, 2, 11, shade(base, -0.28));
+  p(ctx, 5, 3, 7, 9, pages);
+  p(ctx, 5, 3, 7, 1, shade(pages, 0.1));
+  p(ctx, 6, 5, 1, 6, pageLine);
+  p(ctx, 8, 4, 1, 5, pageLine);
+  p(ctx, 10, 5, 1, 4, pageLine);
+  p(ctx, 3, 2, 10, 1, shade(cover, 0.24));
+  p(ctx, 11, 2, 1, 11, shade(cover, -0.22));
+  p(ctx, 3, 12, 10, 1, shade(cover, -0.18));
+  p(ctx, 2, 7, 12, 2, strap);
+  p(ctx, 2, 7, 12, 1, shade(strap, 0.18));
+  p(ctx, 2, 8, 12, 1, shade(strap, -0.2));
+  p(ctx, 8, 7, 2, 2, shade(base, 0.12));
+  p(ctx, 8, 7, 2, 1, shade(base, 0.32));
 }
 function leatherPatch(ctx: Ctx, base: string): void {
-  p(ctx, 3, 4, 10, 8, base);
-  p(ctx, 4, 3, 8, 1, base);
-  p(ctx, 5, 11, 6, 1, base);
-  p(ctx, 3, 4, 10, 1, shade(base, 0.16));
-  p(ctx, 11, 4, 1, 8, shade(base, -0.3));
-  p(ctx, 6, 6, 2, 2, shade(base, -0.14));
+  const L = shade(base, 0.2);
+  const D = shade(base, -0.28);
+  const M = shade(base, -0.1);
+  p(ctx, 4, 3, 8, 1, L);
+  p(ctx, 3, 4, 1, 2, L);
+  p(ctx, 12, 4, 1, 2, base);
+  p(ctx, 2, 6, 12, 6, base);
+  p(ctx, 3, 12, 1, 1, base);
+  p(ctx, 4, 13, 8, 1, D);
+  p(ctx, 12, 11, 1, 2, D);
+  p(ctx, 12, 3, 2, 2, L);
+  p(ctx, 13, 4, 1, 1, D);
+  p(ctx, 2, 11, 2, 2, M);
+  p(ctx, 1, 10, 1, 1, D);
+  p(ctx, 6, 6, 2, 2, M);
+  p(ctx, 8, 8, 3, 1, D);
+  p(ctx, 5, 9, 2, 1, M);
+  p(ctx, 3, 4, 10, 1, L);
+  p(ctx, 11, 4, 1, 8, D);
 }
 function cluster(ctx: Ctx, base: string): void {
   const stem = shade(base, -0.2);
@@ -345,54 +494,123 @@ function cluster(ctx: Ctx, base: string): void {
   p(ctx, 4, 5, 3, 1, shade(base, 0.3));
 }
 function shell(ctx: Ctx, base: string): void {
-  const spiral = shade(base, -0.22);
-  const rows: [number, number][] = [[8, 4], [6, 6], [5, 8], [5, 8], [6, 6], [7, 4]];
-  rows.forEach(([x, w], i) => p(ctx, x, 4 + i, w, 1, base));
-  p(ctx, 6, 7, 4, 1, spiral);
-  p(ctx, 7, 8, 3, 1, spiral);
-  p(ctx, 5, 5, 2, 2, shade(base, 0.22));
+  const band = shade(base, -0.24);
+  const D = shade(base, -0.34);
+  const L = shade(base, 0.22);
+  p(ctx, 7, 3, 4, 1, base);
+  p(ctx, 6, 4, 6, 1, base);
+  p(ctx, 5, 5, 8, 1, base);
+  p(ctx, 4, 6, 9, 1, base);
+  p(ctx, 4, 7, 9, 2, base);
+  p(ctx, 5, 9, 7, 1, base);
+  p(ctx, 6, 10, 5, 1, base);
+  p(ctx, 7, 11, 3, 1, base);
+  p(ctx, 9, 4, 4, 6, base);
+  p(ctx, 10, 3, 3, 2, base);
+  p(ctx, 11, 5, 2, 5, base);
+  p(ctx, 3, 8, 2, 3, D);
+  p(ctx, 4, 9, 1, 2, shade(base, -0.46));
+  p(ctx, 6, 9, 4, 1, band);
+  p(ctx, 7, 8, 3, 1, band);
+  p(ctx, 8, 7, 3, 1, band);
+  p(ctx, 9, 6, 2, 1, band);
+  p(ctx, 10, 5, 2, 1, band);
+  p(ctx, 9, 8, 2, 1, band);
+  p(ctx, 10, 3, 2, 1, L);
+  p(ctx, 6, 4, 3, 1, L);
+  p(ctx, 11, 5, 1, 4, D);
 }
 function scuteItem(ctx: Ctx, base: string): void {
-  p(ctx, 4, 5, 8, 6, base);
-  p(ctx, 5, 4, 6, 1, base);
+  const L = shade(base, 0.26);
+  const D = shade(base, -0.3);
+  const ridge = shade(base, -0.12);
   p(ctx, 6, 3, 4, 1, base);
-  p(ctx, 4, 5, 8, 1, shade(base, 0.24));
-  p(ctx, 4, 10, 8, 1, shade(base, -0.28));
+  p(ctx, 5, 4, 6, 1, base);
+  p(ctx, 4, 5, 8, 1, base);
+  p(ctx, 4, 6, 8, 2, base);
+  p(ctx, 5, 8, 6, 1, base);
+  p(ctx, 6, 9, 4, 1, base);
+  p(ctx, 7, 10, 2, 1, base);
+  p(ctx, 6, 4, 4, 1, L);
+  p(ctx, 7, 5, 2, 3, L);
+  p(ctx, 7, 6, 1, 2, ridge);
+  p(ctx, 4, 7, 8, 1, D);
+  p(ctx, 5, 8, 6, 1, D);
+  p(ctx, 11, 5, 1, 4, D);
+  p(ctx, 4, 5, 1, 3, shade(base, -0.15));
 }
 function shardItem(ctx: Ctx, base: string): void {
-  p(ctx, 6, 3, 4, 2, base);
-  p(ctx, 5, 5, 6, 2, base);
-  p(ctx, 6, 7, 4, 3, base);
-  p(ctx, 7, 10, 2, 3, base);
-  p(ctx, 6, 3, 4, 1, shade(base, 0.32));
-  p(ctx, 8, 8, 2, 2, shade(base, -0.26));
+  const L = shade(base, 0.34);
+  const D = shade(base, -0.28);
+  const hi = shade(base, 0.5);
+  p(ctx, 8, 2, 4, 2, base);
+  p(ctx, 7, 4, 5, 2, base);
+  p(ctx, 6, 6, 6, 2, base);
+  p(ctx, 5, 8, 5, 2, base);
+  p(ctx, 5, 10, 4, 2, base);
+  p(ctx, 6, 12, 3, 1, base);
+  p(ctx, 7, 13, 2, 1, D);
+  p(ctx, 8, 2, 3, 1, L);
+  p(ctx, 7, 2, 1, 1, hi);
+  p(ctx, 6, 6, 3, 1, L);
+  p(ctx, 5, 10, 2, 1, D);
+  p(ctx, 9, 4, 2, 4, shade(base, -0.12));
 }
 function crystal(ctx: Ctx, base: string): void {
-  const main: [number, number][] = [[7, 2], [6, 4], [5, 6], [6, 4], [7, 2]];
-  main.forEach(([x, w], i) => p(ctx, x, 2 + i, w, 1, base));
-  p(ctx, 4, 6, 2, 3, base);
-  p(ctx, 10, 7, 2, 2, base);
-  p(ctx, 5, 8, 6, 2, base);
-  p(ctx, 7, 10, 2, 3, base);
-  p(ctx, 6, 3, 2, 1, shade(base, 0.36));
+  const L = shade(base, 0.38);
+  const D = shade(base, -0.28);
+  const hi = shade(base, 0.55);
+  p(ctx, 6, 3, 2, 1, base);
+  p(ctx, 9, 3, 2, 1, base);
+  p(ctx, 5, 4, 6, 1, base);
+  p(ctx, 5, 5, 6, 1, base);
+  p(ctx, 5, 6, 6, 1, base);
+  p(ctx, 6, 7, 4, 1, base);
+  p(ctx, 7, 8, 2, 1, base);
+  p(ctx, 8, 9, 1, 1, base);
+  p(ctx, 6, 4, 2, 2, L);
+  p(ctx, 6, 4, 1, 1, hi);
+  p(ctx, 9, 6, 2, 2, D);
+  p(ctx, 7, 1, 2, 2, base);
+  p(ctx, 7, 1, 1, 1, L);
+  p(ctx, 3, 5, 2, 3, base);
+  p(ctx, 3, 5, 1, 2, L);
+  p(ctx, 11, 6, 2, 3, base);
+  p(ctx, 12, 7, 1, 2, D);
+  p(ctx, 4, 10, 2, 2, base);
+  p(ctx, 4, 10, 1, 1, shade(base, 0.2));
+  p(ctx, 10, 10, 2, 2, base);
+  p(ctx, 11, 10, 1, 1, D);
 }
 function teardrop(ctx: Ctx, base: string): void {
-  p(ctx, 7, 3, 2, 2, base);
-  p(ctx, 6, 5, 4, 2, base);
-  p(ctx, 5, 7, 6, 2, base);
-  p(ctx, 6, 9, 4, 2, base);
-  p(ctx, 7, 11, 2, 2, base);
-  p(ctx, 7, 4, 2, 2, shade(base, 0.38));
+  const L = shade(base, 0.42);
+  const hi = shade(base, 0.58);
+  const D = shade(base, -0.18);
+  const ghost = shade(base, 0.22);
+  const rows: [number, number][] = [[7, 2], [6, 4], [5, 6], [5, 6], [6, 4], [7, 2], [8, 1]];
+  rows.forEach(([x, w], i) => p(ctx, x, 2 + i, w, 1, base));
+  p(ctx, 7, 3, 2, 2, L);
+  p(ctx, 7, 3, 1, 1, hi);
+  p(ctx, 6, 5, 2, 2, ghost);
+  p(ctx, 8, 7, 2, 2, ghost);
+  p(ctx, 7, 8, 2, 1, shade(base, 0.12));
+  p(ctx, 8, 6, 1, 3, D);
+  p(ctx, 7, 7, 1, 2, D);
 }
 function eyeItem(ctx: Ctx, base: string, accent?: string): void {
   const iris = accent ?? shade(base, -0.35);
-  p(ctx, 5, 5, 6, 2, base);
-  p(ctx, 4, 7, 8, 4, base);
-  p(ctx, 5, 11, 6, 1, base);
-  p(ctx, 5, 5, 6, 1, shade(base, 0.22));
+  const pupil = shade(iris, -0.45);
+  const L = shade(base, 0.28);
+  const D = shade(base, -0.22);
+  const rows: [number, number][] = [[6, 4], [5, 6], [4, 8], [4, 8], [4, 8], [5, 6], [6, 4]];
+  rows.forEach(([x, w], i) => p(ctx, x, 4 + i, w, 1, base));
+  p(ctx, 5, 5, 3, 1, L);
+  p(ctx, 5, 5, 2, 1, shade(base, 0.42));
   p(ctx, 6, 7, 4, 3, iris);
-  p(ctx, 7, 8, 2, 2, shade(iris, -0.45));
-  p(ctx, 6, 7, 2, 1, shade(base, 0.35));
+  p(ctx, 7, 8, 2, 2, pupil);
+  p(ctx, 6, 7, 1, 1, shade(base, 0.45));
+  p(ctx, 5, 10, 6, 1, D);
+  p(ctx, 11, 7, 1, 3, D);
 }
 function brickItem(ctx: Ctx, base: string): void {
   p(ctx, 3, 5, 10, 6, base);
@@ -408,140 +626,222 @@ function flask(ctx: Ctx, base: string, accent: string | undefined, splash: boole
   const g = "#c4e8f0";
   const gHi = "#ecf8fc";
   const gLo = shade(g, -0.14);
-  p(ctx, 7, splash ? 2 : 1, 2, 2, cork);
-  p(ctx, 7, splash ? 4 : 3, 2, 2, gLo);
-  p(ctx, 7, splash ? 4 : 3, 1, 2, gHi);
+  const liqHi = shade(base, 0.24);
+  const liqLo = shade(base, -0.22);
+  const top = splash ? 1 : 0;
+  p(ctx, 7, top, 2, 2, cork);
+  p(ctx, 7, top, 2, 1, shade(cork, 0.2));
+  p(ctx, 7, top + 2, 2, splash ? 2 : 3, g);
+  p(ctx, 7, top + 2, 1, splash ? 2 : 3, gHi);
   if (splash) {
+    p(ctx, 6, 4, 4, 1, g);
+    p(ctx, 5, 5, 6, 1, g);
     p(ctx, 4, 6, 8, 1, g);
-    p(ctx, 3, 7, 1, 5, g);
-    p(ctx, 12, 7, 1, 5, gLo);
-    p(ctx, 3, 11, 10, 1, g);
+    p(ctx, 3, 7, 10, 1, g);
+    p(ctx, 3, 8, 10, 5, g);
+    p(ctx, 4, 13, 8, 1, g);
+    p(ctx, 5, 14, 6, 1, gLo);
+    p(ctx, 3, 7, 1, 6, gHi);
+    p(ctx, 12, 8, 1, 5, gLo);
+    p(ctx, 4, 8, 8, 1, liqHi);
     p(ctx, 4, 9, 8, 4, base);
-    p(ctx, 4, 9, 8, 1, shade(base, 0.2));
+    p(ctx, 5, 13, 6, 1, liqLo);
+    p(ctx, 9, 10, 1, 2, shade(base, -0.28));
   } else {
-    p(ctx, 6, 5, 4, 1, g);
-    p(ctx, 5, 6, 1, 7, gHi);
-    p(ctx, 10, 6, 1, 7, gLo);
-    p(ctx, 5, 6, 6, 1, g);
-    p(ctx, 6, 12, 4, 1, g);
-    p(ctx, 5, 13, 6, 1, gLo);
-    p(ctx, 6, 8, 4, 5, base);
-    p(ctx, 6, 8, 4, 1, shade(base, 0.24));
-    p(ctx, 6, 12, 4, 1, shade(base, -0.22));
+    p(ctx, 6, 4, 4, 1, g);
+    p(ctx, 5, 5, 6, 1, g);
+    p(ctx, 4, 6, 8, 1, g);
+    p(ctx, 4, 7, 8, 5, g);
+    p(ctx, 5, 12, 6, 1, g);
+    p(ctx, 6, 13, 4, 1, gLo);
+    p(ctx, 7, 14, 2, 1, gLo);
+    p(ctx, 5, 5, 1, 9, gHi);
+    p(ctx, 10, 5, 1, 9, gLo);
+    p(ctx, 5, 7, 6, 1, liqHi);
+    p(ctx, 5, 8, 6, 5, base);
+    p(ctx, 5, 12, 6, 1, liqLo);
+    p(ctx, 9, 9, 1, 3, liqLo);
   }
 }
 function emptyFlask(ctx: Ctx, base: string): void {
-  const gHi = shade(base, 0.2);
-  const gLo = shade(base, -0.12);
-  p(ctx, 7, 1, 2, 2, "#b08a52");
-  p(ctx, 7, 3, 2, 2, gLo);
-  p(ctx, 6, 5, 4, 1, base);
-  p(ctx, 5, 6, 1, 7, gHi);
-  p(ctx, 10, 6, 1, 7, gLo);
-  p(ctx, 5, 6, 6, 1, base);
-  p(ctx, 6, 12, 4, 1, base);
-  p(ctx, 5, 13, 6, 1, gLo);
-  p(ctx, 6, 7, 1, 2, "#ffffff");
+  const gHi = shade(base, 0.22);
+  const gLo = shade(base, -0.14);
+  const glint = "#ffffff";
+  p(ctx, 6, 1, 4, 1, gHi);
+  p(ctx, 7, 2, 2, 3, base);
+  p(ctx, 7, 2, 1, 3, glint);
+  p(ctx, 6, 4, 4, 1, base);
+  p(ctx, 5, 5, 6, 1, base);
+  p(ctx, 4, 6, 8, 1, base);
+  p(ctx, 4, 7, 8, 5, base);
+  p(ctx, 5, 12, 6, 1, base);
+  p(ctx, 6, 13, 4, 1, gLo);
+  p(ctx, 7, 14, 2, 1, gLo);
+  p(ctx, 5, 5, 1, 9, gHi);
+  p(ctx, 10, 6, 1, 8, gLo);
+  p(ctx, 7, 8, 1, 4, glint);
+  p(ctx, 6, 10, 2, 1, shade(base, 0.08));
 }
 function xpFlask(ctx: Ctx, base: string): void {
   flask(ctx, base, "#9c7a4d", false);
   p(ctx, 5, 9, 1, 1, "#eaffd8");
   p(ctx, 9, 10, 1, 1, "#ffffff");
   p(ctx, 7, 11, 1, 1, "#eaffd8");
+  p(ctx, 8, 9, 1, 1, "#ffffff");
 }
 function brewingStand(ctx: Ctx, base: string): void {
   const rod = "#d08838";
-  p(ctx, 1, 13, 14, 2, shade(base, -0.08));
-  p(ctx, 7, 9, 2, 4, base);
+  const rodHi = "#ffb060";
+  const rodLo = shade(rod, -0.18);
+  const flaskG = "#c4e8f0";
+  p(ctx, 1, 12, 14, 3, shade(base, -0.1));
+  p(ctx, 1, 12, 14, 1, shade(base, 0.12));
+  p(ctx, 2, 13, 12, 1, base);
+  p(ctx, 7, 9, 2, 3, base);
   p(ctx, 6, 8, 4, 1, shade(base, 0.14));
-  p(ctx, 3, 4, 2, 5, rod);
-  p(ctx, 7, 3, 2, 6, rod);
-  p(ctx, 11, 4, 2, 5, rod);
-  p(ctx, 3, 3, 2, 1, "#ffb060");
-  p(ctx, 7, 2, 2, 1, "#ffb060");
-  p(ctx, 11, 3, 2, 1, "#ffb060");
+  p(ctx, 7, 1, 2, 8, rod);
+  p(ctx, 7, 1, 1, 8, rodHi);
+  p(ctx, 8, 1, 1, 8, rodLo);
+  p(ctx, 7, 1, 2, 1, rodHi);
+  for (const x of [2, 7, 11] as const) {
+    p(ctx, x, 5, 2, 1, rod);
+    p(ctx, x, 5, 2, 1, rodHi);
+    p(ctx, x + 1, 6, 1, 2, flaskG);
+    p(ctx, x, 7, 2, 2, shade(flaskG, -0.1));
+    p(ctx, x, 7, 1, 2, shade(flaskG, 0.18));
+  }
 }
 function cauldron(ctx: Ctx, base: string): void {
   const rim = shade(base, 0.28);
-  p(ctx, 1, 6, 2, 2, base);
-  p(ctx, 13, 6, 2, 2, base);
+  const dark = shade(base, -0.38);
+  const inner = shade(base, -0.48);
+  p(ctx, 2, 13, 2, 2, dark);
+  p(ctx, 12, 13, 2, 2, dark);
   p(ctx, 3, 5, 10, 2, rim);
-  p(ctx, 4, 7, 8, 5, base);
-  p(ctx, 5, 12, 6, 2, shade(base, -0.14));
-  p(ctx, 5, 7, 6, 3, shade(base, -0.38));
+  p(ctx, 2, 6, 2, 2, rim);
+  p(ctx, 12, 6, 2, 2, rim);
+  p(ctx, 3, 7, 10, 6, base);
+  p(ctx, 3, 7, 10, 1, shade(base, 0.14));
+  p(ctx, 12, 7, 1, 6, dark);
+  p(ctx, 4, 13, 8, 1, dark);
+  p(ctx, 5, 14, 6, 1, shade(base, -0.22));
+  p(ctx, 4, 8, 8, 4, inner);
+  p(ctx, 5, 8, 6, 1, dark);
 }
 function fireCharge(ctx: Ctx, base: string): void {
   const ember = shade(base, -0.22);
+  const coalHi = shade(base, 0.14);
   p(ctx, 6, 3, 4, 1, base);
   p(ctx, 5, 4, 6, 1, base);
-  p(ctx, 4, 5, 8, 5, base);
-  p(ctx, 5, 10, 6, 1, ember);
-  p(ctx, 6, 5, 4, 4, "#ffe566");
-  p(ctx, 7, 4, 2, 1, "#fff8b0");
-  p(ctx, 3, 4, 1, 1, shade(base, 0.18));
-  p(ctx, 12, 8, 1, 1, "#ffb040");
+  p(ctx, 4, 5, 8, 1, base);
+  p(ctx, 4, 6, 8, 5, base);
+  p(ctx, 5, 11, 6, 1, ember);
+  p(ctx, 6, 12, 4, 1, ember);
+  p(ctx, 5, 4, 4, 1, coalHi);
+  p(ctx, 4, 5, 1, 5, coalHi);
+  p(ctx, 5, 6, 6, 4, "#ffe566");
+  p(ctx, 6, 5, 4, 1, "#fff8b0");
+  p(ctx, 7, 7, 2, 2, "#fff8b0");
+  p(ctx, 3, 4, 1, 1, "#ffb040");
+  p(ctx, 12, 7, 1, 1, "#ffb040");
 }
 function totem(ctx: Ctx, base: string, accent?: string): void {
   const dark = shade(base, -0.32);
-  const eye = accent ?? "#4a9a4a";
-  p(ctx, 5, 2, 6, 12, base);
-  p(ctx, 5, 2, 6, 1, shade(base, 0.18));
-  p(ctx, 10, 2, 1, 12, dark);
-  p(ctx, 2, 5, 3, 3, dark);
-  p(ctx, 11, 5, 3, 3, dark);
-  p(ctx, 6, 5, 1, 2, eye);
-  p(ctx, 9, 5, 1, 2, eye);
-  p(ctx, 6, 8, 4, 1, dark);
+  const mid = shade(base, -0.12);
+  const face = accent ?? "#4a9a4a";
+  const faceDark = shade(face, -0.35);
+  p(ctx, 5, 2, 6, 5, base);
+  p(ctx, 5, 2, 6, 1, shade(base, 0.2));
+  p(ctx, 6, 7, 4, 4, base);
+  p(ctx, 6, 11, 4, 2, mid);
+  p(ctx, 2, 6, 3, 2, dark);
+  p(ctx, 11, 6, 3, 2, dark);
+  p(ctx, 2, 6, 3, 1, shade(dark, 0.12));
+  p(ctx, 6, 4, 4, 3, face);
+  p(ctx, 6, 4, 1, 2, faceDark);
+  p(ctx, 9, 4, 1, 2, faceDark);
+  p(ctx, 7, 6, 2, 1, faceDark);
+  p(ctx, 10, 2, 1, 11, dark);
   p(ctx, 5, 11, 6, 1, dark);
 }
 function nameTag(ctx: Ctx, base: string, accent?: string): void {
   const ink = accent ?? "#4a4a4a";
   const string = shade(base, -0.32);
+  const tagHi = shade(base, 0.16);
+  const tagLo = shade(base, -0.14);
   p(ctx, 7, 1, 2, 1, string);
   p(ctx, 6, 2, 1, 2, string);
   p(ctx, 9, 2, 1, 2, string);
-  p(ctx, 4, 5, 8, 9, base);
-  p(ctx, 4, 5, 8, 1, shade(base, 0.16));
-  p(ctx, 11, 5, 1, 9, shade(base, -0.14));
-  p(ctx, 7, 5, 2, 2, "#2e2e2e");
+  p(ctx, 8, 2, 1, 1, shade(string, 0.12));
+  p(ctx, 4, 4, 8, 10, base);
+  p(ctx, 5, 3, 6, 1, base);
+  p(ctx, 5, 14, 6, 1, tagLo);
+  p(ctx, 4, 4, 8, 1, tagHi);
+  p(ctx, 11, 4, 1, 10, tagLo);
+  p(ctx, 7, 4, 2, 2, "#2e2e2e");
   p(ctx, 5, 8, 6, 1, ink);
   p(ctx, 5, 10, 4, 1, ink);
+  p(ctx, 5, 12, 5, 1, shade(ink, 0.15));
 }
 function lead(ctx: Ctx, base: string, accent?: string): void {
   const hook = accent ?? "#c8c8c8";
+  const hookHi = shade(hook, 0.22);
+  const ropeLo = shade(base, -0.22);
   p(ctx, 6, 2, 4, 2, hook);
+  p(ctx, 6, 2, 4, 1, hookHi);
   p(ctx, 6, 4, 1, 2, hook);
   p(ctx, 9, 4, 1, 2, shade(hook, -0.12));
-  p(ctx, 7, 6, 2, 2, base);
-  p(ctx, 6, 8, 2, 2, shade(base, -0.22));
-  p(ctx, 8, 10, 2, 2, base);
-  p(ctx, 6, 12, 2, 2, shade(base, -0.22));
-  p(ctx, 4, 13, 5, 2, shade(base, -0.22));
+  p(ctx, 8, 3, 1, 1, hookHi);
+  p(ctx, 7, 6, 2, 2, ropeLo);
+  p(ctx, 6, 7, 4, 2, base);
+  p(ctx, 6, 7, 4, 1, shade(base, 0.12));
+  p(ctx, 7, 9, 2, 2, base);
+  p(ctx, 5, 11, 2, 2, ropeLo);
+  p(ctx, 8, 12, 2, 2, base);
+  p(ctx, 4, 13, 4, 2, ropeLo);
+  p(ctx, 4, 13, 4, 1, shade(ropeLo, -0.1));
 }
 function mapRoll(ctx: Ctx, base: string, accent?: string): void {
   const edge = shade(base, -0.2);
+  const edgeLo = shade(base, -0.32);
   const land = accent ?? "#6a9a62";
-  p(ctx, 2, 5, 12, 6, base);
-  p(ctx, 2, 5, 12, 1, shade(base, 0.14));
-  p(ctx, 2, 10, 12, 1, edge);
-  p(ctx, 1, 6, 1, 4, edge);
-  p(ctx, 14, 6, 1, 4, edge);
+  const water = shade(land, -0.35);
+  p(ctx, 1, 6, 2, 4, edgeLo);
+  p(ctx, 13, 6, 2, 4, edgeLo);
+  p(ctx, 1, 6, 2, 1, edge);
+  p(ctx, 13, 6, 2, 1, edge);
+  p(ctx, 3, 5, 10, 6, base);
+  p(ctx, 3, 5, 10, 1, shade(base, 0.14));
+  p(ctx, 3, 10, 10, 1, edge);
   p(ctx, 4, 7, 3, 2, land);
-  p(ctx, 8, 8, 2, 2, shade(land, -0.25));
-  p(ctx, 7, 10, 2, 1, "#8a4a42");
+  p(ctx, 8, 8, 3, 2, water);
+  p(ctx, 7, 7, 1, 1, "#8a4a42");
+  p(ctx, 10, 9, 2, 1, land);
+  p(ctx, 5, 9, 2, 1, shade(land, -0.2));
 }
 function fermentedEye(ctx: Ctx, base: string): void {
+  const hi = shade(base, 0.22);
   const lo = shade(base, -0.28);
+  const pupil = shade(base, -0.45);
+  const spot = shade(base, -0.12);
   p(ctx, 5, 5, 6, 1, base);
   p(ctx, 4, 6, 8, 1, base);
-  p(ctx, 3, 7, 10, 4, base);
-  p(ctx, 4, 11, 8, 1, lo);
-  p(ctx, 3, 7, 1, 4, shade(base, 0.22));
-  p(ctx, 5, 8, 2, 2, shade(base, -0.12));
-  p(ctx, 7, 8, 2, 2, shade(base, -0.45));
+  p(ctx, 4, 7, 8, 4, base);
+  p(ctx, 5, 11, 6, 1, lo);
+  p(ctx, 6, 12, 4, 1, lo);
+  p(ctx, 4, 6, 1, 5, hi);
+  p(ctx, 6, 8, 2, 2, pupil);
+  p(ctx, 7, 8, 1, 1, shade(pupil, -0.2));
+  p(ctx, 9, 7, 2, 2, spot);
+  p(ctx, 5, 10, 2, 1, spot);
+  p(ctx, 10, 9, 1, 1, hi);
 }
 
 // --- Tools / weapons / armor ----------------------------------------------
+function toolHandle(ctx: Ctx, wood: string): void {
+  for (let i = 0; i < 8; i++) p(ctx, 3 + i, 13 - i, 2, 2, wood);
+  for (let i = 0; i < 8; i++) p(ctx, 3 + i, 13 - i, 1, 1, shade(wood, 0.16));
+}
 function drawSword(ctx: Ctx, base: string, wood: string, guard: string): void {
   p(ctx, 2, 13, 2, 2, guard);
   p(ctx, 3, 10, 2, 4, wood);
@@ -551,36 +851,34 @@ function drawSword(ctx: Ctx, base: string, wood: string, guard: string): void {
   p(ctx, 11, 1, 1, 1, shade(base, 0.32));
 }
 function drawPickaxe(ctx: Ctx, base: string, wood: string): void {
-  p(ctx, 1, 4, 2, 2, base);
-  p(ctx, 2, 2, 2, 2, base);
-  p(ctx, 3, 1, 2, 2, base);
-  p(ctx, 11, 4, 2, 2, base);
-  p(ctx, 10, 2, 2, 2, base);
-  p(ctx, 9, 1, 2, 2, base);
-  p(ctx, 3, 4, 10, 2, base);
-  p(ctx, 3, 4, 10, 1, shade(base, 0.24));
-  p(ctx, 7, 6, 2, 9, wood);
+  toolHandle(ctx, wood);
+  p(ctx, 8, 5, 7, 2, base);
+  p(ctx, 8, 3, 2, 2, base);
+  p(ctx, 13, 3, 2, 2, base);
+  p(ctx, 8, 5, 7, 1, shade(base, 0.26));
+  p(ctx, 8, 6, 7, 1, shade(base, -0.2));
 }
 function drawAxe(ctx: Ctx, base: string, wood: string): void {
-  p(ctx, 7, 2, 6, 5, base);
-  p(ctx, 9, 2, 4, 2, shade(base, 0.26));
-  p(ctx, 4, 3, 3, 3, base);
-  p(ctx, 6, 6, 3, 2, shade(base, -0.32));
-  p(ctx, 7, 8, 2, 7, wood);
+  toolHandle(ctx, wood);
+  p(ctx, 9, 2, 5, 3, base);
+  p(ctx, 10, 5, 4, 2, base);
+  p(ctx, 11, 7, 3, 1, base);
+  p(ctx, 9, 2, 5, 1, shade(base, 0.26));
+  p(ctx, 9, 2, 1, 5, shade(base, -0.22));
 }
 function drawShovel(ctx: Ctx, base: string, wood: string): void {
-  p(ctx, 5, 2, 6, 2, base);
-  p(ctx, 4, 4, 8, 2, base);
-  p(ctx, 5, 6, 6, 2, base);
-  p(ctx, 5, 2, 6, 1, shade(base, 0.28));
-  p(ctx, 7, 8, 2, 7, wood);
+  toolHandle(ctx, wood);
+  p(ctx, 10, 2, 4, 4, base);
+  p(ctx, 11, 6, 2, 1, base);
+  p(ctx, 10, 2, 4, 1, shade(base, 0.28));
+  p(ctx, 13, 2, 1, 4, shade(base, -0.2));
 }
 function drawHoe(ctx: Ctx, base: string, wood: string): void {
-  p(ctx, 2, 3, 7, 2, base);
-  p(ctx, 2, 5, 5, 2, base);
-  p(ctx, 2, 3, 7, 1, shade(base, 0.22));
-  p(ctx, 7, 5, 2, 2, base);
-  p(ctx, 8, 5, 2, 10, wood);
+  toolHandle(ctx, wood);
+  p(ctx, 9, 3, 6, 2, base);
+  p(ctx, 9, 5, 2, 2, base);
+  p(ctx, 9, 3, 6, 1, shade(base, 0.24));
+  p(ctx, 14, 3, 1, 2, shade(base, -0.2));
 }
 function drawHelmet(ctx: Ctx, base: string): void {
   p(ctx, 5, 2, 6, 2, base);
@@ -783,11 +1081,15 @@ function boat(ctx: Ctx, base: string): void {
 }
 function sapling(ctx: Ctx, base: string, accent?: string): void {
   const trunk = accent ?? "#9c7a4d";
-  p(ctx, 4, 12, 8, 3, "#7a5a3a");
-  p(ctx, 7, 8, 2, 5, trunk);
-  p(ctx, 5, 4, 6, 4, base);
+  p(ctx, 7, 10, 2, 5, trunk);
+  p(ctx, 7, 10, 1, 5, shade(trunk, 0.14));
+  p(ctx, 5, 4, 6, 6, base);
+  p(ctx, 4, 5, 8, 4, base);
   p(ctx, 6, 3, 4, 1, shade(base, 0.25));
   p(ctx, 4, 6, 2, 2, shade(base, 0.15));
+  p(ctx, 10, 5, 2, 2, shade(base, -0.12));
+  p(ctx, 6, 8, 4, 1, shade(base, -0.18));
+  p(ctx, 6, 14, 4, 1, shade(trunk, -0.28));
 }
 function leaves(ctx: Ctx, base: string): void {
   p(ctx, 2, 4, 12, 10, base);
@@ -861,71 +1163,158 @@ function tnt(ctx: Ctx, base: string): void {
   p(ctx, 3, 10, 10, 1, shade("#f4f4ee", -0.12));
 }
 function piston(ctx: Ctx, base: string): void {
-  p(ctx, 2, 2, 12, 6, base);
-  p(ctx, 2, 2, 12, 1, shade(base, 0.2));
-  p(ctx, 2, 7, 12, 1, shade(base, -0.25));
-  p(ctx, 1, 8, 14, 6, "#9a9a9a");
-  p(ctx, 1, 8, 14, 1, shade("#9a9a9a", 0.18));
-  p(ctx, 1, 13, 14, 2, shade("#9a9a9a", -0.25));
+  const wood = base;
+  const stone = shade(base, -0.28);
+  const head = shade(base, 0.06);
+  p(ctx, 1, 2, 14, 5, wood);
+  p(ctx, 1, 2, 14, 1, shade(wood, 0.24));
+  p(ctx, 1, 2, 1, 5, shade(wood, 0.14));
+  p(ctx, 13, 2, 1, 5, shade(wood, -0.18));
+  p(ctx, 5, 3, 1, 3, shade(wood, -0.14));
+  p(ctx, 9, 3, 1, 3, shade(wood, -0.14));
+  p(ctx, 1, 6, 14, 1, shade(wood, -0.22));
+  p(ctx, 1, 7, 14, 4, stone);
+  p(ctx, 1, 7, 14, 1, shade(stone, 0.16));
+  p(ctx, 1, 10, 14, 1, shade(stone, -0.24));
+  p(ctx, 13, 7, 1, 4, shade(stone, -0.18));
+  p(ctx, 5, 8, 2, 2, shade(stone, -0.1));
+  p(ctx, 9, 9, 2, 1, shade(stone, 0.08));
+  p(ctx, 2, 11, 12, 3, head);
+  p(ctx, 2, 11, 12, 1, shade(head, 0.2));
+  p(ctx, 2, 13, 12, 1, shade(head, -0.26));
+  p(ctx, 1, 11, 1, 3, shade(head, 0.1));
+  p(ctx, 14, 11, 1, 3, shade(head, -0.16));
+  p(ctx, 6, 12, 4, 1, shade(head, -0.08));
 }
 function stickyPiston(ctx: Ctx, base: string, accent?: string): void {
-  piston(ctx, base);
-  p(ctx, 2, 2, 12, 2, accent ?? "#7aa84f");
-  p(ctx, 3, 3, 10, 2, shade(accent ?? "#7aa84f", 0.15));
+  const plank = accent ?? "#9c8456";
+  piston(ctx, plank);
+  const slime = base;
+  p(ctx, 2, 11, 12, 3, slime);
+  p(ctx, 3, 12, 10, 1, shade(slime, 0.22));
+  p(ctx, 2, 13, 12, 1, shade(slime, -0.22));
+  p(ctx, 5, 12, 2, 1, shade(slime, 0.14));
+  p(ctx, 9, 12, 2, 1, shade(slime, 0.1));
+  p(ctx, 7, 11, 2, 1, shade(slime, 0.18));
 }
 function hopper(ctx: Ctx, base: string): void {
-  p(ctx, 2, 3, 12, 2, shade(base, 0.08));
-  p(ctx, 3, 5, 10, 3, base);
-  p(ctx, 5, 8, 6, 2, base);
-  p(ctx, 7, 10, 2, 4, base);
-  p(ctx, 2, 3, 12, 1, shade(base, 0.2));
-  p(ctx, 7, 13, 2, 1, shade(base, -0.3));
+  const hi = shade(base, 0.2);
+  const lo = shade(base, -0.28);
+  const rim = shade(base, 0.26);
+  p(ctx, 1, 2, 14, 2, base);
+  p(ctx, 1, 2, 14, 1, rim);
+  p(ctx, 1, 3, 1, 1, hi);
+  p(ctx, 14, 3, 1, 1, lo);
+  p(ctx, 2, 4, 12, 2, base);
+  p(ctx, 3, 6, 10, 2, base);
+  p(ctx, 4, 8, 8, 2, base);
+  p(ctx, 2, 4, 1, 6, hi);
+  p(ctx, 13, 4, 1, 6, lo);
+  p(ctx, 4, 4, 8, 1, shade(base, -0.18));
+  p(ctx, 5, 6, 6, 1, shade(base, -0.14));
+  p(ctx, 6, 10, 4, 2, base);
+  p(ctx, 7, 12, 2, 3, base);
+  p(ctx, 7, 12, 2, 1, lo);
+  p(ctx, 6, 10, 4, 1, shade(base, 0.12));
+  p(ctx, 7, 14, 2, 1, shade(base, -0.32));
 }
 function dispenser(ctx: Ctx, base: string): void {
+  const hole = shade(base, -0.42);
+  const deep = shade(base, -0.55);
   block(ctx, base);
-  p(ctx, 4, 6, 8, 5, shade(base, -0.42));
-  p(ctx, 5, 7, 6, 3, shade(base, -0.55));
-  p(ctx, 10, 8, 2, 1, "#cfcfcf");
+  p(ctx, 4, 4, 8, 8, hole);
+  p(ctx, 5, 5, 6, 6, deep);
+  p(ctx, 6, 6, 4, 4, shade(base, -0.62));
+  p(ctx, 7, 5, 2, 6, shade(base, -0.62));
+  p(ctx, 5, 7, 6, 2, shade(base, -0.62));
+  p(ctx, 7, 7, 2, 2, shade(base, -0.72));
+  p(ctx, 7, 10, 2, 1, shade(base, 0.12));
 }
 function dropper(ctx: Ctx, base: string): void {
+  const hole = shade(base, -0.42);
+  const deep = shade(base, -0.55);
   block(ctx, base);
-  p(ctx, 5, 3, 6, 2, shade(base, -0.35));
-  p(ctx, 6, 5, 4, 6, shade(base, -0.48));
-  p(ctx, 7, 11, 2, 2, shade(base, -0.55));
+  p(ctx, 5, 2, 6, 2, hole);
+  p(ctx, 6, 3, 4, 1, deep);
+  p(ctx, 6, 4, 4, 8, hole);
+  p(ctx, 7, 5, 2, 6, deep);
+  p(ctx, 6, 12, 4, 2, hole);
+  p(ctx, 7, 13, 2, 1, shade(base, -0.68));
+  p(ctx, 6, 4, 1, 8, shade(hole, 0.08));
 }
 function lever(ctx: Ctx, base: string): void {
-  p(ctx, 3, 9, 10, 5, "#8a8a8a");
-  p(ctx, 3, 9, 10, 1, "#9a9a9a");
-  for (let i = 0; i < 6; i++) p(ctx, 4 + i, 8 - i, 2, 2, base);
-  p(ctx, 9, 3, 2, 2, shade(base, 0.2));
+  const cobble = shade(base, -0.42);
+  const rock = shade(base, -0.18);
+  const stick = base;
+  p(ctx, 2, 10, 12, 5, cobble);
+  p(ctx, 3, 11, 4, 2, rock);
+  p(ctx, 8, 10, 5, 3, shade(rock, 0.08));
+  p(ctx, 4, 13, 4, 2, shade(rock, -0.12));
+  p(ctx, 9, 13, 4, 2, rock);
+  p(ctx, 2, 10, 12, 1, shade(cobble, 0.1));
+  p(ctx, 2, 14, 12, 1, shade(cobble, -0.22));
+  for (let i = 0; i < 7; i++) p(ctx, 4 + i, 9 - i, 2, 2, stick);
+  for (let i = 0; i < 7; i++) p(ctx, 4 + i, 9 - i, 1, 1, shade(stick, 0.2));
+  p(ctx, 10, 3, 2, 2, stick);
+  p(ctx, 10, 3, 1, 1, shade(stick, 0.28));
 }
 function railIcon(ctx: Ctx, base: string): void {
-  const rail = shade(base, 0.25);
-  for (const y of [5, 9, 13]) p(ctx, 2, y, 12, 1, shade(base, -0.18));
-  p(ctx, 3, 4, 2, 10, rail);
-  p(ctx, 11, 4, 2, 10, rail);
-  p(ctx, 3, 4, 2, 1, shade(rail, 0.3));
+  const tie = shade(base, -0.18);
+  const tieHi = shade(tie, 0.14);
+  const rail = shade(base, 0.32);
+  const railHi = shade(rail, 0.22);
+  const railLo = shade(base, 0.08);
+  for (const x of [3, 7, 11]) {
+    p(ctx, x, 3, 2, 10, tie);
+    p(ctx, x, 3, 1, 10, tieHi);
+  }
+  p(ctx, 2, 5, 12, 2, railLo);
+  p(ctx, 2, 5, 12, 1, railHi);
+  p(ctx, 2, 9, 12, 2, railLo);
+  p(ctx, 2, 10, 12, 1, shade(railLo, -0.14));
+  p(ctx, 2, 9, 12, 1, railHi);
 }
 function minecart(ctx: Ctx, base: string): void {
-  p(ctx, 2, 6, 12, 5, base);
-  p(ctx, 3, 5, 10, 1, base);
-  p(ctx, 2, 6, 12, 1, shade(base, 0.22));
-  p(ctx, 2, 10, 12, 1, shade(base, -0.26));
-  p(ctx, 4, 7, 8, 2, shade(base, 0.08));
-  p(ctx, 3, 11, 3, 2, "#3a3a3a");
-  p(ctx, 10, 11, 3, 2, "#3a3a3a");
+  const dark = shade(base, -0.36);
+  const inner = shade(base, -0.2);
+  const hi = shade(base, 0.28);
+  const wheel = shade(base, -0.5);
+  const wheelHi = shade(wheel, 0.2);
+  p(ctx, 2, 12, 4, 2, wheel);
+  p(ctx, 3, 12, 2, 1, wheelHi);
+  p(ctx, 10, 12, 4, 2, wheel);
+  p(ctx, 11, 12, 2, 1, wheelHi);
+  p(ctx, 3, 4, 10, 1, hi);
+  p(ctx, 2, 5, 1, 7, hi);
+  p(ctx, 13, 5, 1, 7, dark);
+  p(ctx, 3, 5, 1, 6, hi);
+  p(ctx, 12, 5, 1, 6, dark);
+  p(ctx, 4, 6, 8, 5, inner);
+  p(ctx, 3, 11, 10, 1, dark);
+  p(ctx, 2, 11, 12, 1, dark);
 }
 function bookshelf(ctx: Ctx, base: string, accent?: string): void {
-  const spineA = accent ?? "#c0322b";
-  const spineB = shade(base, -0.35);
-  const spineC = "#1f4ca5";
+  const shelf = shade(base, -0.28);
+  const frame = shade(base, -0.18);
+  const spineA = accent ?? shade(base, -0.45);
+  const spineB = shade(spineA, -0.18);
+  const spineC = shade(base, 0.12);
+  const spineD = shade(spineA, 0.14);
   p(ctx, 1, 1, 14, 14, base);
-  for (const y of [5, 9]) p(ctx, 1, y, 14, 1, shade(base, -0.3));
-  const spines: [number, string][] = [[3, spineA], [5, spineB], [7, spineC], [9, spineA], [11, spineB]];
-  for (const [x, c] of spines) {
-    p(ctx, x, 2, 2, 3, c);
-    p(ctx, x, 6, 2, 3, shade(c, 0.08));
-    p(ctx, x, 10, 2, 3, c);
+  p(ctx, 1, 1, 14, 1, shade(base, 0.16));
+  p(ctx, 1, 13, 14, 1, frame);
+  p(ctx, 13, 1, 1, 14, frame);
+  p(ctx, 1, 5, 14, 1, shelf);
+  p(ctx, 1, 9, 14, 1, shelf);
+  const top: [number, number, string][] = [[2, 2, spineA], [5, 2, spineB], [8, 3, spineC], [12, 1, spineD]];
+  for (const [x, w, c] of top) {
+    p(ctx, x, 2, w, 3, c);
+    p(ctx, x, 2, 1, 3, shade(c, 0.2));
+  }
+  const bot: [number, number, string][] = [[2, 1, spineB], [4, 3, spineA], [8, 2, spineD], [11, 2, spineC]];
+  for (const [x, w, c] of bot) {
+    p(ctx, x, 10, w, 3, c);
+    p(ctx, x, 10, 1, 3, shade(c, 0.2));
   }
 }
 function glowstoneBlock(ctx: Ctx, base: string): void {
@@ -936,29 +1325,56 @@ function glowstoneBlock(ctx: Ctx, base: string): void {
   }
 }
 function ladder(ctx: Ctx, base: string): void {
-  const D = shade(base, -0.25);
+  const rung = shade(base, -0.22);
+  const hi = shade(base, 0.18);
+  const lo = shade(base, -0.28);
   p(ctx, 4, 1, 2, 14, base);
   p(ctx, 10, 1, 2, 14, base);
-  for (const y of [3, 6, 9, 12]) p(ctx, 4, y, 8, 1, D);
-  p(ctx, 4, 1, 2, 14, shade(base, 0.12));
+  p(ctx, 4, 1, 1, 14, hi);
+  p(ctx, 11, 1, 1, 14, lo);
+  for (const y of [3, 6, 9, 12]) {
+    p(ctx, 6, y, 4, 1, rung);
+    p(ctx, 6, y, 4, 1, shade(rung, 0.12));
+  }
+  p(ctx, 4, 1, 2, 1, hi);
+  p(ctx, 10, 1, 2, 1, hi);
+  p(ctx, 4, 14, 2, 1, lo);
+  p(ctx, 10, 14, 2, 1, lo);
 }
 function bed(ctx: Ctx, base: string, accent?: string): void {
-  const frame = accent ?? "#9c7a4d";
-  p(ctx, 1, 10, 14, 4, frame);
-  p(ctx, 2, 5, 12, 6, base);
-  p(ctx, 2, 5, 12, 1, shade(base, 0.12));
-  p(ctx, 2, 5, 3, 4, "#f4f4ee");
-  p(ctx, 13, 5, 1, 6, shade(base, -0.2));
+  const frame = accent ?? shade(base, -0.42);
+  const frameHi = shade(frame, 0.16);
+  const frameLo = shade(frame, -0.22);
+  const pillow = shade(frame, 0.72);
+  const sheet = shade(base, 0.1);
+  const sheetLo = shade(base, -0.18);
+  p(ctx, 1, 12, 2, 3, frameLo);
+  p(ctx, 13, 12, 2, 3, frameLo);
+  p(ctx, 1, 13, 14, 2, frame);
+  p(ctx, 1, 4, 2, 9, frame);
+  p(ctx, 1, 4, 1, 9, frameHi);
+  p(ctx, 3, 5, 11, 7, base);
+  p(ctx, 3, 5, 11, 1, sheet);
+  p(ctx, 13, 5, 1, 7, sheetLo);
+  p(ctx, 3, 5, 4, 3, pillow);
+  p(ctx, 3, 5, 4, 1, shade(pillow, 0.1));
+  p(ctx, 13, 7, 1, 5, frame);
+  p(ctx, 12, 10, 2, 1, frameLo);
 }
 function lantern(ctx: Ctx, base: string, accent?: string): void {
   const cage = accent ?? "#9a7a5a";
   const light = base || "#e7c46b";
-  p(ctx, 7, 1, 2, 2, cage);
+  p(ctx, 7, 1, 2, 1, cage);
+  p(ctx, 6, 2, 4, 1, cage);
   p(ctx, 5, 3, 6, 1, cage);
-  p(ctx, 4, 4, 8, 8, cage);
-  p(ctx, 6, 5, 4, 5, light);
-  p(ctx, 7, 6, 2, 2, "#fff2b0");
+  p(ctx, 4, 4, 1, 8, cage);
+  p(ctx, 11, 4, 1, 8, cage);
+  p(ctx, 5, 4, 6, 7, light);
+  p(ctx, 7, 5, 2, 4, "#fff2b0");
+  p(ctx, 6, 6, 1, 2, shade(light, 0.2));
+  p(ctx, 9, 7, 1, 2, shade(light, -0.12));
   p(ctx, 5, 12, 6, 1, cage);
+  p(ctx, 6, 13, 4, 1, shade(cage, -0.2));
 }
 function redstoneTorch(ctx: Ctx, base: string, accent?: string): void {
   const stick = accent ?? "#9c7a4d";
@@ -968,32 +1384,81 @@ function redstoneTorch(ctx: Ctx, base: string, accent?: string): void {
 }
 function repeater(ctx: Ctx, base: string, accent?: string): void {
   const rs = accent ?? "#c0322b";
-  p(ctx, 2, 6, 12, 7, base);
-  p(ctx, 2, 6, 12, 1, shade(base, 0.2));
-  p(ctx, 4, 8, 2, 3, rs);
-  p(ctx, 10, 8, 2, 3, rs);
-  p(ctx, 6, 9, 4, 1, rs);
-  p(ctx, 7, 7, 2, 5, shade(base, -0.35));
+  const stick = shade(rs, -0.38);
+  const glow = shade(rs, 0.32);
+  const slabHi = shade(base, 0.18);
+  const slabLo = shade(base, -0.24);
+  p(ctx, 1, 10, 14, 5, base);
+  p(ctx, 1, 10, 14, 1, slabHi);
+  p(ctx, 1, 14, 14, 1, slabLo);
+  p(ctx, 1, 10, 1, 5, shade(base, 0.08));
+  p(ctx, 14, 10, 1, 5, shade(base, -0.12));
+  p(ctx, 3, 9, 10, 1, rs);
+  p(ctx, 5, 8, 6, 1, shade(rs, 0.18));
+  p(ctx, 3, 5, 2, 4, stick);
+  p(ctx, 3, 3, 2, 2, rs);
+  p(ctx, 3, 3, 1, 1, glow);
+  p(ctx, 11, 5, 2, 4, stick);
+  p(ctx, 11, 3, 2, 2, rs);
+  p(ctx, 12, 3, 1, 1, glow);
+  p(ctx, 7, 11, 2, 3, shade(base, -0.32));
+  p(ctx, 7, 11, 2, 1, shade(base, -0.18));
 }
 function comparator(ctx: Ctx, base: string, accent?: string): void {
   const rs = accent ?? "#c0322b";
-  p(ctx, 2, 6, 12, 7, base);
-  p(ctx, 2, 6, 12, 1, shade(base, 0.2));
-  p(ctx, 3, 8, 3, 3, rs);
-  p(ctx, 10, 8, 3, 3, rs);
-  p(ctx, 6, 9, 4, 1, rs);
-  p(ctx, 7, 7, 2, 2, shade(base, -0.35));
+  const stick = shade(rs, -0.38);
+  const glow = shade(rs, 0.32);
+  const slabHi = shade(base, 0.18);
+  const slabLo = shade(base, -0.24);
+  p(ctx, 1, 10, 14, 5, base);
+  p(ctx, 1, 10, 14, 1, slabHi);
+  p(ctx, 1, 14, 14, 1, slabLo);
+  p(ctx, 1, 10, 1, 5, shade(base, 0.08));
+  p(ctx, 14, 10, 1, 5, shade(base, -0.12));
+  p(ctx, 2, 9, 12, 1, rs);
+  p(ctx, 4, 8, 8, 1, shade(rs, 0.16));
+  p(ctx, 2, 5, 2, 4, stick);
+  p(ctx, 2, 3, 2, 2, rs);
+  p(ctx, 3, 3, 1, 1, glow);
+  p(ctx, 12, 5, 2, 4, stick);
+  p(ctx, 12, 3, 2, 2, rs);
+  p(ctx, 12, 3, 1, 1, glow);
+  p(ctx, 7, 4, 2, 4, stick);
+  p(ctx, 7, 2, 2, 2, rs);
+  p(ctx, 7, 2, 1, 1, glow);
 }
 function observer(ctx: Ctx, base: string, accent?: string): void {
+  const rs = accent ?? "#c0322b";
+  const face = shade(base, -0.36);
+  const bezel = shade(base, -0.52);
   block(ctx, base);
-  p(ctx, 4, 4, 8, 8, shade(base, -0.4));
-  p(ctx, 6, 6, 4, 4, shade(base, -0.55));
-  p(ctx, 7, 7, 2, 2, accent ?? "#c0322b");
+  p(ctx, 1, 3, 5, 10, face);
+  p(ctx, 1, 3, 5, 1, shade(face, 0.14));
+  p(ctx, 1, 12, 5, 1, shade(face, -0.22));
+  p(ctx, 5, 3, 1, 10, shade(face, -0.12));
+  p(ctx, 2, 5, 3, 6, bezel);
+  p(ctx, 2, 6, 2, 4, rs);
+  p(ctx, 2, 6, 1, 2, shade(rs, 0.35));
+  p(ctx, 10, 4, 1, 8, shade(base, -0.16));
+  p(ctx, 12, 5, 1, 6, shade(base, -0.1));
+  p(ctx, 8, 6, 1, 4, shade(base, -0.08));
 }
 function torch(ctx: Ctx, base: string): void {
-  p(ctx, 7, 7, 2, 8, "#9c7a4d");
-  p(ctx, 6, 3, 4, 4, base || "#e7c46b");
-  p(ctx, 7, 2, 2, 2, "#fff2b0");
+  const wood = "#9c7a4d";
+  const flame = base || "#e7c46b";
+  const hi = "#fff2b0";
+  const core = shade(flame, 0.25);
+  const ember = shade(flame, -0.18);
+  p(ctx, 7, 6, 2, 9, wood);
+  p(ctx, 7, 6, 1, 9, shade(wood, 0.16));
+  p(ctx, 8, 14, 1, 1, shade(wood, -0.25));
+  p(ctx, 7, 5, 2, 1, ember);
+  p(ctx, 6, 3, 4, 2, flame);
+  p(ctx, 7, 2, 2, 1, core);
+  p(ctx, 7, 1, 2, 1, hi);
+  p(ctx, 6, 3, 1, 2, shade(flame, 0.3));
+  p(ctx, 9, 4, 1, 1, ember);
+  p(ctx, 5, 4, 1, 1, shade(flame, 0.15));
 }
 function stick(ctx: Ctx, base: string): void {
   const c = base ?? "#9c7a4d";
@@ -1006,72 +1471,105 @@ function liquidBucket(ctx: Ctx, base: string, accent?: string): void {
   const hi = shade(base, 0.24);
   const lo = shade(base, -0.22);
   const dark = shade(base, -0.34);
-  p(ctx, 6, 2, 4, 1, base);
-  p(ctx, 5, 3, 1, 2, base);
-  p(ctx, 10, 3, 1, 2, base);
-  p(ctx, 3, 5, 10, 1, base);
-  p(ctx, 3, 6, 2, 7, base);
-  p(ctx, 11, 6, 2, 7, lo);
+  p(ctx, 5, 1, 6, 1, base);
+  p(ctx, 5, 1, 2, 1, hi);
+  p(ctx, 4, 2, 1, 1, base);
+  p(ctx, 11, 2, 1, 1, lo);
+  p(ctx, 3, 3, 1, 1, lo);
+  p(ctx, 12, 3, 1, 1, lo);
+  if (accent) {
+    p(ctx, 4, 6, 8, 2, accent);
+    p(ctx, 5, 8, 6, 4, accent);
+    p(ctx, 5, 11, 6, 1, shade(accent, -0.24));
+    p(ctx, 4, 5, 8, 1, shade(accent, 0.34));
+    p(ctx, 6, 6, 2, 1, shade(accent, 0.38));
+  } else {
+    p(ctx, 4, 6, 8, 2, shade(base, -0.52));
+    p(ctx, 5, 8, 6, 3, shade(base, -0.62));
+    p(ctx, 6, 9, 4, 2, shade(base, -0.68));
+    p(ctx, 4, 5, 8, 1, shade(base, -0.45));
+    p(ctx, 5, 11, 6, 1, dark);
+  }
+  p(ctx, 3, 4, 10, 2, base);
+  p(ctx, 3, 4, 10, 1, hi);
+  p(ctx, 12, 5, 1, 1, lo);
   p(ctx, 3, 6, 1, 7, hi);
+  p(ctx, 4, 7, 1, 2, base);
+  p(ctx, 5, 9, 1, 3, base);
+  p(ctx, 12, 6, 1, 7, lo);
+  p(ctx, 11, 7, 1, 2, lo);
+  p(ctx, 10, 9, 1, 3, lo);
   p(ctx, 4, 12, 8, 1, dark);
   p(ctx, 5, 13, 6, 1, lo);
-  if (accent) {
-    p(ctx, 5, 6, 6, 1, shade(accent, 0.3));
-    p(ctx, 4, 7, 8, 5, accent);
-    p(ctx, 5, 11, 6, 1, shade(accent, -0.22));
-    p(ctx, 6, 8, 2, 1, shade(accent, 0.3));
-  } else {
-    p(ctx, 5, 6, 6, 6, shade(base, -0.48));
-    p(ctx, 5, 6, 6, 1, shade(base, -0.55));
-  }
 }
 function ringDial(ctx: Ctx, rim: string): void {
-  const ring: [number, number][] = [
-    [6, 3], [7, 3], [8, 3], [9, 3], [5, 4], [10, 4], [4, 5], [11, 5], [4, 6], [11, 6],
-    [4, 7], [11, 7], [4, 8], [11, 8], [4, 9], [11, 9], [5, 10], [10, 10], [6, 11], [7, 11], [8, 11], [9, 11],
+  const rows: [number, number][] = [
+    [7, 2], [6, 4], [5, 6], [4, 8], [4, 8], [4, 8], [4, 8], [5, 6], [6, 4], [7, 2],
   ];
-  for (const [x, y] of ring) p(ctx, x, y, 1, 1, rim);
+  rows.forEach(([x, w], i) => p(ctx, x, 3 + i, w, 1, rim));
 }
 function compass(ctx: Ctx, base: string, accent?: string): void {
   const face = shade(base, 0.42);
   const needle = accent ?? "#c0322b";
-  ringDial(ctx, base);
-  p(ctx, 6, 4, 4, 1, face);
-  p(ctx, 5, 5, 6, 6, face);
-  p(ctx, 6, 11, 4, 1, face);
-  p(ctx, 7, 7, 2, 2, shade(base, -0.24));
+  const tail = shade(base, 0.72);
+  const hub = shade(base, -0.28);
+  ringDial(ctx, shade(base, -0.1));
+  const faceRows: [number, number][] = [
+    [6, 4], [5, 6], [4, 8], [4, 8], [4, 8], [4, 8], [5, 6], [6, 4],
+  ];
+  faceRows.forEach(([x, w], i) => p(ctx, x, 4 + i, w, 1, face));
+  p(ctx, 5, 4, 2, 1, shade(face, 0.14));
+  p(ctx, 10, 4, 1, 1, needle);
   p(ctx, 9, 5, 1, 1, needle);
   p(ctx, 8, 5, 1, 1, needle);
-  p(ctx, 8, 6, 1, 1, shade(needle, 0.2));
-  p(ctx, 6, 8, 1, 1, "#888");
-  p(ctx, 5, 9, 1, 1, "#777");
+  p(ctx, 8, 6, 1, 1, shade(needle, -0.06));
+  p(ctx, 7, 7, 1, 1, shade(needle, -0.14));
+  p(ctx, 4, 10, 1, 1, shade(tail, -0.1));
+  p(ctx, 5, 9, 1, 1, tail);
+  p(ctx, 5, 8, 1, 1, tail);
+  p(ctx, 6, 8, 1, 1, tail);
+  p(ctx, 7, 8, 1, 1, shade(tail, -0.06));
+  p(ctx, 7, 7, 2, 2, hub);
 }
 function clock(ctx: Ctx, base: string): void {
-  const face = shade(base, 0.55);
-  const hand = shade(base, -0.55);
-  ringDial(ctx, base);
-  p(ctx, 6, 4, 4, 1, face);
-  p(ctx, 5, 5, 6, 6, face);
-  p(ctx, 6, 11, 4, 1, face);
-  p(ctx, 7, 7, 2, 2, hand);
-  p(ctx, 5, 8, 3, 1, hand);
-  p(ctx, 8, 4, 1, 4, hand);
+  const day = shade(base, 0.55);
+  const night = shade(base, -0.5);
+  ringDial(ctx, shade(base, -0.1));
+  const splits: [number, number, number, number][] = [
+    [6, 4, 2, 2], [5, 5, 3, 3], [4, 6, 4, 4], [4, 7, 4, 4],
+    [4, 8, 4, 4], [4, 9, 4, 4], [5, 10, 3, 3], [6, 11, 2, 2],
+  ];
+  for (const [x, y, dw, nw] of splits) {
+    p(ctx, x, y, dw, 1, day);
+    p(ctx, x + dw, y, nw, 1, night);
+  }
+  p(ctx, 8, 4, 1, 8, shade(night, -0.12));
 }
 function liquidBlock(ctx: Ctx, base: string, isLava: boolean): void {
   const side = shade(base, -0.28);
-  p(ctx, 1, 7, 14, 8, side);
-  p(ctx, 1, 14, 14, 1, shade(base, -0.4));
-  p(ctx, 13, 7, 2, 8, shade(base, -0.4));
-  p(ctx, 1, 5, 14, 3, base);
-  p(ctx, 1, 5, 14, 1, shade(base, 0.32));
-  p(ctx, 3, 6, 5, 1, shade(base, 0.32));
-  p(ctx, 9, 7, 4, 1, shade(base, -0.12));
+  const deep = shade(base, -0.42);
+  const topHi = shade(base, 0.32);
+  p(ctx, 1, 8, 14, 6, side);
+  p(ctx, 1, 8, 2, 6, shade(base, -0.18));
+  p(ctx, 13, 8, 2, 6, deep);
+  p(ctx, 1, 13, 14, 2, deep);
+  p(ctx, 1, 14, 14, 1, shade(base, -0.48));
+  p(ctx, 1, 4, 14, 4, base);
+  p(ctx, 1, 4, 14, 1, topHi);
+  p(ctx, 1, 4, 1, 4, shade(base, 0.18));
+  p(ctx, 13, 4, 2, 4, shade(base, 0.06));
+  p(ctx, 1, 7, 14, 1, shade(base, -0.1));
   if (isLava) {
-    p(ctx, 5, 7, 2, 1, shade(base, 0.45));
-    p(ctx, 11, 7, 1, 1, "#ffdd66");
+    p(ctx, 3, 5, 4, 1, shade(base, 0.38));
+    p(ctx, 9, 6, 3, 1, shade(base, 0.22));
+    p(ctx, 5, 6, 2, 1, "#ffdd66");
+    p(ctx, 11, 5, 2, 1, "#ffb040");
   } else {
-    p(ctx, 4, 7, 1, 1, "#ffffff");
-    p(ctx, 7, 7, 2, 1, "#ffffff");
+    p(ctx, 2, 5, 5, 1, shade(base, 0.14));
+    p(ctx, 9, 6, 4, 1, shade(base, -0.08));
+    p(ctx, 3, 6, 1, 1, "#ffffff");
+    p(ctx, 7, 5, 2, 1, "#ffffff");
+    p(ctx, 11, 5, 1, 1, "#ffffff");
   }
 }
 function sugarCane(ctx: Ctx, base: string): void {
@@ -1187,16 +1685,22 @@ function trialKey(ctx: Ctx, base: string): void {
 // --- Food ------------------------------------------------------------------
 function foodApple(ctx: Ctx, base: string, accent: string | undefined, id: string): void {
   const leaf = accent ?? "#4a7a32";
-  p(ctx, 7, 2, 2, 3, shade(base, -0.42));
-  p(ctx, 9, 2, 3, 2, leaf);
+  const stem = shade(base, -0.42);
+  p(ctx, 7, 2, 2, 2, stem);
+  p(ctx, 8, 1, 1, 1, stem);
+  p(ctx, 9, 2, 3, 1, leaf);
+  p(ctx, 10, 3, 2, 1, leaf);
+  p(ctx, 11, 4, 1, 1, shade(leaf, 0.12));
   const rows: [number, number][] = [[7, 2], [6, 4], [5, 6], [5, 6], [5, 6], [5, 6], [6, 4], [7, 2]];
-  rows.forEach(([x, w], i) => p(ctx, x, 5 + i, w, 1, base));
-  p(ctx, 6, 6, 2, 5, shade(base, 0.28));
-  p(ctx, 9, 9, 2, 2, shade(base, -0.22));
-  if (id !== "apple") p(ctx, 8, 6, 2, 1, shade(base, 0.35));
+  rows.forEach(([x, w], i) => p(ctx, x, 4 + i, w, 1, base));
+  p(ctx, 6, 5, 2, 4, shade(base, 0.28));
+  p(ctx, 9, 7, 2, 3, shade(base, -0.22));
+  p(ctx, 8, 10, 1, 1, shade(base, -0.14));
+  if (id !== "apple") p(ctx, 7, 6, 2, 1, shade(base, 0.35));
   if (id === "enchanted_golden_apple") {
-    p(ctx, 4, 8, 1, 1, "#bf4cc7");
-    p(ctx, 11, 7, 1, 1, "#3aafd9");
+    p(ctx, 5, 7, 1, 1, "#bf4cc7");
+    p(ctx, 10, 8, 1, 1, "#3aafd9");
+    p(ctx, 8, 10, 1, 1, "#bf4cc7");
   }
 }
 function foodBread(ctx: Ctx, base: string): void {
@@ -1248,14 +1752,24 @@ function foodMeatCooked(ctx: Ctx, base: string): void {
 }
 function foodFish(ctx: Ctx, base: string, accent?: string): void {
   const fin = accent ?? shade(base, -0.22);
-  p(ctx, 4, 6, 7, 4, base);
-  p(ctx, 3, 7, 1, 2, base);
-  p(ctx, 11, 6, 3, 4, base);
-  p(ctx, 12, 5, 2, 1, base);
-  p(ctx, 12, 10, 2, 1, base);
-  p(ctx, 5, 9, 5, 1, shade(base, 0.14));
-  p(ctx, 4, 5, 2, 1, fin);
-  p(ctx, 6, 5, 1, 1, "#2a2a2a");
+  const belly = shade(base, 0.14);
+  p(ctx, 4, 6, 8, 4, base);
+  p(ctx, 2, 7, 2, 2, base);
+  p(ctx, 3, 6, 1, 1, base);
+  p(ctx, 3, 10, 1, 1, base);
+  p(ctx, 12, 6, 2, 1, base);
+  p(ctx, 12, 9, 2, 1, base);
+  p(ctx, 13, 7, 1, 2, base);
+  p(ctx, 14, 6, 1, 1, base);
+  p(ctx, 14, 9, 1, 1, base);
+  p(ctx, 6, 4, 2, 2, fin);
+  p(ctx, 8, 5, 3, 1, fin);
+  p(ctx, 11, 5, 1, 1, fin);
+  p(ctx, 5, 10, 4, 1, belly);
+  p(ctx, 7, 11, 2, 1, fin);
+  p(ctx, 3, 7, 1, 1, "#2a2a2a");
+  p(ctx, 5, 8, 5, 1, shade(base, 0.08));
+  p(ctx, 10, 7, 2, 2, shade(base, -0.18));
 }
 function foodCookie(ctx: Ctx, base: string): void {
   const chip = shade(base, -0.35);
@@ -1281,13 +1795,20 @@ function foodWheat(ctx: Ctx, base: string, accent: string | undefined, id: strin
     }
     return;
   }
-  p(ctx, 7, 11, 2, 3, stalk);
-  p(ctx, 6, 10, 1, 2, stalk);
-  p(ctx, 9, 10, 1, 2, stalk);
-  for (const [x, y] of [[5, 3], [8, 2], [6, 5], [8, 5]] as const) {
-    p(ctx, x, y, 2, 2, base);
-    p(ctx, x, y, 1, 1, shade(base, 0.22));
-  }
+  const tie = shade(stalk, -0.35);
+  p(ctx, 5, 10, 1, 4, stalk);
+  p(ctx, 7, 9, 2, 5, stalk);
+  p(ctx, 10, 10, 1, 4, stalk);
+  p(ctx, 6, 13, 4, 1, tie);
+  p(ctx, 4, 2, 3, 3, base);
+  p(ctx, 7, 1, 3, 4, base);
+  p(ctx, 10, 2, 3, 3, base);
+  p(ctx, 4, 2, 2, 1, shade(base, 0.28));
+  p(ctx, 7, 1, 2, 2, shade(base, 0.32));
+  p(ctx, 10, 2, 2, 1, shade(base, 0.28));
+  p(ctx, 4, 3, 1, 2, shade(base, -0.12));
+  p(ctx, 8, 2, 1, 3, shade(base, -0.12));
+  p(ctx, 11, 3, 1, 2, shade(base, -0.12));
 }
 function foodBerries(ctx: Ctx, base: string, accent?: string): void {
   const leaf = accent ?? "#4a7a32";
@@ -1316,7 +1837,6 @@ function food(ctx: Ctx, base: string): void {
 function archetype(def: ItemDef): string {
   const id = def.id.replace(/^.*:/, "");
 
-  // 1.21 + special single items (before generic suffix rules)
   if (id === "spyglass") return "spyglass";
   if (id === "mace") return "mace";
   if (id === "trial_key") return "trialKey";
@@ -1331,10 +1851,8 @@ function archetype(def: ItemDef): string {
   if (id === "calcite") return "calcite";
   if (id === "breeze_rod") return "breezeRod";
 
-  // Tools / weapons / armor
   if (def.tool || /^(bow|arrow|shield|trident|fishing_rod|shears|flint_and_steel)$/.test(id)) return "tool";
 
-  // Metals / minerals
   if (/_ingot$/.test(id)) return "ingot";
   if (/_nugget$/.test(id)) return "nugget";
   if (/^netherite_scrap$/.test(id)) return "scrap";
@@ -1348,7 +1866,6 @@ function archetype(def: ItemDef): string {
   if (/^lapis_lazuli$/.test(id)) return "gemShard";
   if (/^diamond$|^emerald$/.test(id)) return "gem";
 
-  // Loose drops
   if (/^ender_pearl$|^snowball$|^slime_ball$|^magma_cream$|^clay_ball$/.test(id)) return "orb";
   if (/^egg$/.test(id)) return "egg";
   if (/^ghast_tear$/.test(id)) return "teardrop";
@@ -1365,10 +1882,8 @@ function archetype(def: ItemDef): string {
   if (/^leather$/.test(id)) return "leather";
   if (/^spider_eye$|^ender_eye$/.test(id)) return "eye";
 
-  // Dust / powders
   if (/_dust$|^redstone$|^gunpowder$|^sugar$|_dye$|blaze_powder|bone_meal/.test(id)) return "dust";
 
-  // Brewing / potions / utility items
   if (/^glass_bottle$/.test(id)) return "emptyFlask";
   if (/^splash_potion$/.test(id)) return "splashFlask";
   if (/^experience_bottle$/.test(id)) return "xpFlask";
@@ -1382,7 +1897,6 @@ function archetype(def: ItemDef): string {
   if (/^lead$/.test(id)) return "lead";
   if (/^map$/.test(id)) return "mapRoll";
 
-  // Transport / liquids
   if (/^compass$/.test(id)) return "compass";
   if (/^clock$/.test(id)) return "clock";
   if (/^minecart$/.test(id)) return "minecart";
@@ -1390,12 +1904,10 @@ function archetype(def: ItemDef): string {
   if (/^sugar_cane$/.test(id)) return "cane";
   if (/bucket$/.test(id)) return "bucket";
 
-  // Thin items
   if (/^stick$/.test(id)) return "stick";
   if (/^redstone_torch$/.test(id)) return "redstoneTorch";
   if (/^torch$/.test(id)) return "torch";
 
-  // Food (specific shapes, then category fallback)
   if (/^apple$|^golden_apple$|^enchanted_golden_apple$/.test(id)) return "foodApple";
   if (/^bread$/.test(id)) return "foodBread";
   if (/^cookie$/.test(id)) return "foodCookie";
@@ -1410,7 +1922,6 @@ function archetype(def: ItemDef): string {
   if (/^mushroom_stew$/.test(id)) return "foodStew";
   if (def.category === "food") return "food";
 
-  // Wood set
   if (/_sapling$/.test(id)) return "sapling";
   if (/_leaves$/.test(id)) return "leaves";
   if (/_pressure_plate$/.test(id)) return "pressurePlate";
@@ -1426,7 +1937,6 @@ function archetype(def: ItemDef): string {
   if (/_door$/.test(id)) return "door";
   if (/_boat$/.test(id)) return "boat";
 
-  // Functional blocks
   if (/^crafting_table$/.test(id)) return "craftingTable";
   if (/^furnace$/.test(id)) return "furnace";
   if (/^ender_chest$/.test(id)) return "enderChest";
@@ -1448,7 +1958,6 @@ function archetype(def: ItemDef): string {
   if (/^bed$/.test(id)) return "bed";
   if (/lantern$/.test(id)) return "lantern";
 
-  // Building blocks
   if (/^brick$/.test(id)) return "brickItem";
   if (/^cobblestone$/.test(id)) return "cobble";
   if (/^stone_bricks$|^nether_bricks$/.test(id)) return "stoneBrick";

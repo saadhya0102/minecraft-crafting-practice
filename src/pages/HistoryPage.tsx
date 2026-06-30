@@ -16,6 +16,10 @@ export function HistoryPage({ onPlay }: { onPlay?: () => void }) {
 
   useEffect(() => {
     refresh();
+    const onChanged = () => refresh();
+    window.addEventListener("craftpace:history-changed", onChanged);
+    return () => window.removeEventListener("craftpace:history-changed", onChanged);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const stats = useMemo(() => {

@@ -9,6 +9,8 @@ interface Settings {
   setGuiScale: (n: number) => void;
   setHighContrast: (b: boolean) => void;
   setReducedMotion: (b: boolean) => void;
+  /** Re-read from localStorage (used after a cloud restore). */
+  reload: () => void;
 }
 
 function load(): { guiScale: number; highContrast: boolean; reducedMotion: boolean } {
@@ -47,4 +49,5 @@ export const useSettingsStore = create<Settings>((set, get) => ({
     set({ reducedMotion: b });
     persist(get());
   },
+  reload: () => set({ ...load() }),
 }));
