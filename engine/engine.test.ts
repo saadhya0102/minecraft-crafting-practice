@@ -228,6 +228,22 @@ describe("shift-click quick move", () => {
     expect(total).toBe(14);
   });
 
+  it("fast-loots while holding a stack on the cursor (cursor stays intact)", () => {
+    const state = engine.create(chestLayout());
+    const ids = state.layout.containerSlots;
+    state.slots[ids[0]] = { id: "minecraft:iron_ingot", count: 5 };
+    state.slots[ids[1]] = { id: "minecraft:oak_planks", count: 9 };
+    // Holding a heart-of-the-sea (any item) on the cursor, like grabbing it first.
+    state.cursor = { id: "minecraft:ender_pearl", count: 1 };
+    engine.shiftLeftClick(state, ids[0]);
+    engine.shiftLeftClick(state, ids[1]);
+    // looted items moved to inventory, container emptied
+    expect(state.slots[ids[0]]).toBeNull();
+    expect(state.slots[ids[1]]).toBeNull();
+    // the held cursor stack is unchanged
+    expect(state.cursor).toEqual({ id: "minecraft:ender_pearl", count: 1 });
+  });
+
   it("routes a smeltable into the furnace input via shift-click", () => {
     const state = engine.create(furnaceLayout());
     const h0 = state.layout.playerHotbar[0];
